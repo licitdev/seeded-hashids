@@ -1,0 +1,33 @@
+{
+  "name": "seeded-hashids",
+  "version": "0.0.1",
+  "description": "Generate seeded Hashids that is unique per scope.",
+  "main": "seeded-hashids.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/licitdev/seeded-hashids.git"
+  },
+  "keywords": [
+    "hashids",
+    "hashid",
+    "hash",
+    "ids",
+    "seed",
+    "seeded",
+    "shuffle",
+    "encode",
+    "decode",
+    "objectid",
+    "mongodb",
+    "mongoose"
+  ],
+  "author": "ian <licitdev@gmail.com> (http://licitdev.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/licitdev/seeded-hashids/issues"
+  },
+  "homepage": "https://github.com/licitdev/seeded-hashids#readme"
+}
