@@ -1,6 +1,6 @@
 {
   "name": "seeded-hashids",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Generate seeded Hashids that is unique per scope.",
   "main": "seeded-hashids.js",
   "scripts": {
