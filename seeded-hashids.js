@@ -194,7 +194,7 @@ module.exports = {
       throw new Error('Invalid objectid variable.');
     }
 
-    ObjectId = objectIdVariable; 
+    _objectId = objectIdVariable; 
   },
   
   setHashLength: function(length) {
