@@ -160,8 +160,11 @@ describe('when initialized', () => {
 		});
 	});
   
-  it('should get the same value for .getInitialized', () => {
-    assert.deepEqual(true, seededHashids.getInitialized());
+  it('should get the same value for .isInitialized', () => {
+    seededHashids.reset();
+    assert.deepEqual(false, seededHashids.isInitialized());
+    seededHashids.initialize(defaults);
+    assert.deepEqual(true, seededHashids.isInitialized());
 	});
   
   it('should get the same value for .getScopes', () => {
@@ -607,21 +610,6 @@ describe('when encoding and decoding without shuffle', () => {
     var encoded = seededHashids.encodeHex('user', hex);
     var decoded = seededHashids.decodeObjectId('user', encoded);
     assert.deepEqual(null, decoded);
-    
-    seededHashids.reset();
-    seededHashids.initialize({scopes: [
-      {scope: 'user', salt: 'some-salt'}
-    ]});
-    
-    var a = seededHashids.encodeHex('user', 'abcd1234abcd1234abcd1234', 'unique-seed');
-    var b = seededHashids.decodeHex('user', a, 'unique-seed');
-//     a = seededHashids.encode('user', 12345678, 'unique-seed');
-//     b = seededHashids.decode('user', a, 'unique-seed');
-    
-    
-    console.log(a);
-    console.log(b);
-
 	});
   
 });

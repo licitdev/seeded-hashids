@@ -128,7 +128,7 @@ var hashLength = 8;
 var shuffleOutput = true;
 ```
 
-##### objectId `ObjectId` *(optional)*
+##### objectId `Function` *(optional)*
 - This object is required only if there is a need to cast the decoding output to an ObjectId using .decodeObjectId.
 - Can pass in `require('mongoose').Types.ObjectId ` or `require('mongodb').ObjectId` or functions.
 ```javascript
@@ -210,6 +210,42 @@ var userId = Hasher.decodeObjectId('user', 'g9jM7B94VjJQhWj4AVNVqE', 'unique-see
 
 #### seed `String` *(optional)*
 - This seed is used to decode a hashid that is "unique" for itself.
+---
+### isInitialized () : isInitialized `Boolean`
+
+```javascript
+var isInitialized = Hasher.isInitialized();
+```
+---
+### getScopes () : scopes `Array`
+
+```javascript
+var scopes = Hasher.getScopes();
+```
+---
+### getCharset () : charset `String`
+
+```javascript
+var charset = Hasher.getCharset();
+```
+---
+### getHashLength () : hashLength `Number`
+
+```javascript
+var hashLength = Hasher.getHashLength();
+```
+---
+### getShuffleOutput () : shuffleOutput `Boolean`
+
+```javascript
+var shuffleOutput = Hasher.getShuffleOutput();
+```
+---
+### getObjectId () : objectId `Function`
+
+```javascript
+var objectId = Hasher.getObjectId();
+```
 
 
 ## Pitfalls

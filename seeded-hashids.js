@@ -157,7 +157,7 @@ function _requireInitialized(){
 }
 
 module.exports = {
-  getInitialized: function() {
+  isInitialized: function() {
     return _initialized;
   },
   
