@@ -3,8 +3,8 @@ var HashIds = require('hashids');
 
 var HexPattern = /^[a-fA-F0-9]+$/;
 var Defaults = {
-  charset: 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789', // Removed 1, 0, iI, oO which could look confusing
   scopes: {},
+  charset: 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789', // Removed 1, 0, iI, oO which could look confusing
   hashLength: 8,
   shuffleOutput: true,
   objectId: null
@@ -181,16 +181,16 @@ module.exports = {
     return _objectId;
   },
   
-  encode: function(scope, data, seed) {
+  encode: function(scope, number, seed) {
     _requireInitialized();
 
-    return _encode(false, scope, data, seed);
+    return _encode(false, scope, number, seed);
   },
 
-  encodeHex: function(scope, data, seed) {
+  encodeHex: function(scope, hex, seed) {
     _requireInitialized();
 
-    return _encode(true, scope, data, seed);
+    return _encode(true, scope, hex, seed);
   },
 
   decode: function(scope, hash, seed) {
@@ -226,20 +226,6 @@ module.exports = {
   initialize: function(options){ // [{scope: String, salt: String}, ...]
     _requireUninitialized();
     
-    if(options.hashLength !== undefined){
-      options.hashLength = parseInt(options.hashLength);
-
-      if(isNaN(options.hashLength) || options.hashLength < 0){
-        throw new Error('Invalid hashLength, must be a positive number.');
-      }
-
-      _hashLength = options.hashLength;
-    }
-    
-    if(options.shuffleOutput !== undefined){
-      _shuffleOutput = !!options.shuffleOutput;
-    }
-    
     if(options.charset !== undefined){
       if(typeof options.charset !== 'string'){
         throw new Error('Invalid charset, must a string with 16 or more unique characters.');
@@ -257,6 +243,20 @@ module.exports = {
       }
 
       _charset = uniqueCharacters;
+    }
+    
+    if(options.hashLength !== undefined){
+      options.hashLength = parseInt(options.hashLength);
+
+      if(isNaN(options.hashLength) || options.hashLength < 0){
+        throw new Error('Invalid hashLength, must be a positive number.');
+      }
+
+      _hashLength = options.hashLength;
+    }
+    
+    if(options.shuffleOutput !== undefined){
+      _shuffleOutput = !!options.shuffleOutput;
     }
     
     if(options.objectId !== undefined){

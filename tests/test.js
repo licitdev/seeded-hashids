@@ -6,10 +6,10 @@ var defaults = {
     {scope: 'user', salt: 'abcd'},
     {scope: 'profile', salt: '1234'},
   ],
-  objectId: require('mongoose').Types.ObjectId, // Can also use require('mongodb').ObjectId
-  hashLength: 8,
   charset: '1234567890abcdef',
-  shuffleOutput: true
+  hashLength: 8,
+  shuffleOutput: true,
+  objectId: require('mongoose').Types.ObjectId, // Can also use require('mongodb').ObjectId
 };
 
 describe('when uninitialized', () => {
@@ -555,9 +555,7 @@ describe('when encoding and decoding without shuffle', () => {
     var hex = 'abcdef1234567890abcdef12';
     var encoded = seededHashids.encodeHex('user', hex);
     var decoded = seededHashids.decodeObjectId('user', encoded);
-    if(decoded){
-      decoded = decoded.toString()
-    }
+    decoded = decoded.toString()
     assert.deepEqual(hex, decoded);
 	});
   
@@ -566,9 +564,7 @@ describe('when encoding and decoding without shuffle', () => {
     var salt = 'somesalt';
     var encoded = seededHashids.encodeHex('user', hex, salt);
     var decoded = seededHashids.decodeObjectId('user', encoded, salt);
-    if(decoded){
-      decoded = decoded.toString()
-    }
+    decoded = decoded.toString()
     assert.deepEqual(hex, decoded);
 	});
   
@@ -608,9 +604,24 @@ describe('when encoding and decoding without shuffle', () => {
   it('should return null when .decodeObjectId with an invalid hash without salt', () => {
     var hex = 'abcdef1234567890';
     var salt = 'somesalt';
-    var encoded = seededHashids.encodeHex('user', hex, salt);
-    var decoded = seededHashids.decodeObjectId('user', encoded, salt);
+    var encoded = seededHashids.encodeHex('user', hex);
+    var decoded = seededHashids.decodeObjectId('user', encoded);
     assert.deepEqual(null, decoded);
+    
+    seededHashids.reset();
+    seededHashids.initialize({scopes: [
+      {scope: 'user', salt: 'some-salt'}
+    ]});
+    
+    var a = seededHashids.encodeHex('user', 'abcd1234abcd1234abcd1234', 'unique-seed');
+    var b = seededHashids.decodeHex('user', a, 'unique-seed');
+//     a = seededHashids.encode('user', 12345678, 'unique-seed');
+//     b = seededHashids.decode('user', a, 'unique-seed');
+    
+    
+    console.log(a);
+    console.log(b);
+
 	});
   
 });
