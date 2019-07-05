@@ -36,41 +36,41 @@ Install Seeded-Hashids via:
 Sample code:
 
 ```javascript
-var Hasher = require('seeded-hashids');
+var seededHashids = require('seeded-hashids');
 var ObjectId = require('mongoose').Types.ObjectId;
 var scopes = [
 	{scope: 'user', salt: 'some-salt'}
 ];
 
-Hasher.initialize({scopes: scopes, objectId: ObjectId});
+seededHashids.initialize({scopes: scopes, objectId: ObjectId});
 
 var encoded, decoded;
 
 // Encoding hex strings
-encoded = Hasher.encodeHex('user', 'abcd1234');
-decoded = Hasher.decodeHex('user', encoded);
+encoded = seededHashids.encodeHex('user', 'abcd1234');
+decoded = seededHashids.decodeHex('user', encoded);
 console.log(encoded); // 'dAMW5Em6'
 console.log(decoded); // 'abcd1234'
 
 // Encoding hex strings with seed
-encoded = Hasher.encodeHex('user', 'abcd1234', 'unique-seed');
-decoded = Hasher.decodeHex('user', encoded, 'unique-seed');
+encoded = seededHashids.encodeHex('user', 'abcd1234', 'unique-seed');
+decoded = seededHashids.decodeHex('user', encoded, 'unique-seed');
 console.log(encoded); // 'MVVEdMKq'
 console.log(decoded); // 'abcd1234'
 
 // If a wrong salt is used to decode, a different output will be  
-decoded = Hasher.decodeHex('user', encoded, 'wrong-seed');
+decoded = seededHashids.decodeHex('user', encoded, 'wrong-seed');
 console.log(decoded); // 'cabd2341' (Different)
 
 // Decoding ObjectIds, same as hex but needs to be 24 characters hex string
-encoded = Hasher.encodeHex('user', 'abcd1234abcd1234abcd1234', 'unique-seed');
-decoded = Hasher.decodeObjectId('user', encoded, 'unique-seed');
+encoded = seededHashids.encodeHex('user', 'abcd1234abcd1234abcd1234', 'unique-seed');
+decoded = seededHashids.decodeObjectId('user', encoded, 'unique-seed');
 console.log(encoded); // 'g9jM7B94VjJQhWj4AVNVqE'
 console.log(decoded); // ObjectId('abcd1234abcd1234abcd1234')
 
 // Encoding positive integers
-encoded = Hasher.encode('user', 12345678);
-decoded = Hasher.decode('user', encoded);
+encoded = seededHashids.encode('user', 12345678);
+decoded = seededHashids.decode('user', encoded);
 console.log(encoded); // 'ezBbrM'
 console.log(decoded); // 12345678
 ```
@@ -80,7 +80,7 @@ console.log(decoded); // 12345678
 ### **initialize (options)** : noResult `undefined`
 
 ```javascript
-Hasher.initialize({
+seededHashids.initialize({
 	scopes: scopes,
     charset: charset,
     hashLength: hashLength,
@@ -138,7 +138,7 @@ var objectId = require('mongoose').Types.ObjectId;
 ### **encode (scope, number, [seed])** : Hashid `String`
 
 ```javascript
-var userId = Hasher.encode('user', 12345678);
+var userId = seededHashids.encode('user', 12345678);
 ```
 
 #### scope `String`
@@ -153,7 +153,7 @@ var userId = Hasher.encode('user', 12345678);
 ### **encodeHex (scope, hex, [seed])** : Hashid `String`
 
 ```javascript
-var userId = Hasher.encodeHex('user', 'abcd1234', 'unique-seed');
+var userId = seededHashids.encodeHex('user', 'abcd1234', 'unique-seed');
 ```
 
 #### scope `String`
@@ -169,7 +169,7 @@ var userId = Hasher.encodeHex('user', 'abcd1234', 'unique-seed');
 ### **decode (scope, hash, [seed])** : decodedNumber `Number`
 
 ```javascript
-var userId = Hasher.decode('user', 'X3e8L9EG', 'unique-seed');
+var userId = seededHashids.decode('user', 'X3e8L9EG', 'unique-seed');
 ```
 
 #### scope `String`
@@ -184,7 +184,7 @@ var userId = Hasher.decode('user', 'X3e8L9EG', 'unique-seed');
 ### **decodeHex (scope, hash, [seed])** : decodedHex `String`
 
 ```javascript
-var userId = Hasher.decodeHex('user', 'MVVEdMKq', 'unique-seed');
+var userId = seededHashids.decodeHex('user', 'MVVEdMKq', 'unique-seed');
 ```
 
 #### scope `String`
@@ -199,7 +199,7 @@ var userId = Hasher.decodeHex('user', 'MVVEdMKq', 'unique-seed');
 ### **decodeObjectId (scope, hash, [seed])** : decodedObjectId `ObjectId`
 
 ```javascript
-var userId = Hasher.decodeObjectId('user', 'g9jM7B94VjJQhWj4AVNVqE', 'unique-seed');
+var userId = seededHashids.decodeObjectId('user', 'g9jM7B94VjJQhWj4AVNVqE', 'unique-seed');
 ```
 
 #### scope `String`
@@ -214,37 +214,37 @@ var userId = Hasher.decodeObjectId('user', 'g9jM7B94VjJQhWj4AVNVqE', 'unique-see
 ### **isInitialized () : isInitialized** `Boolean`
 
 ```javascript
-var isInitialized = Hasher.isInitialized();
+var isInitialized = seededHashids.isInitialized();
 ```
 ---
 ### **getScopes () : scopes** `Array`
 
 ```javascript
-var scopes = Hasher.getScopes();
+var scopes = seededHashids.getScopes();
 ```
 ---
 ### **getCharset () : charset** `String`
 
 ```javascript
-var charset = Hasher.getCharset();
+var charset = seededHashids.getCharset();
 ```
 ---
 ### **getHashLength () : hashLength** `Number`
 
 ```javascript
-var hashLength = Hasher.getHashLength();
+var hashLength = seededHashids.getHashLength();
 ```
 ---
 ### **getShuffleOutput () : shuffleOutput** `Boolean`
 
 ```javascript
-var shuffleOutput = Hasher.getShuffleOutput();
+var shuffleOutput = seededHashids.getShuffleOutput();
 ```
 ---
 ### **getObjectId () : objectId** `Function`
 
 ```javascript
-var objectId = Hasher.getObjectId();
+var objectId = seededHashids.getObjectId();
 ```
 
 
