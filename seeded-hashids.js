@@ -215,12 +215,9 @@ module.exports = {
     // Do decode as per hex
     var data = _decode(true, scope, hash, seed);
     
-    // Cast to ObjectId if is valid
+    // Cast to ObjectId if is 24 character hex string
     if(data && data.length === 24){
-      var objectId = _objectId(data);
-      if(objectId.toString() === data){
-        return objectId;
-      }
+      return _objectId(data);
     }
     
     return null;
