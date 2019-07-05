@@ -456,9 +456,7 @@ describe('when encoding and decoding with shuffle', () => {
     var hex = 'abcdef1234567890abcdef12';
     var encoded = seededHashids.encodeHex('user', hex);
     var decoded = seededHashids.decodeObjectId('user', encoded);
-    if(decoded){
-      decoded = decoded.toString()
-    }
+    decoded = decoded.toString()
     assert.deepEqual(hex, decoded);
 	});
   
@@ -467,9 +465,7 @@ describe('when encoding and decoding with shuffle', () => {
     var salt = 'somesalt';
     var encoded = seededHashids.encodeHex('user', hex, salt);
     var decoded = seededHashids.decodeObjectId('user', encoded, salt);
-    if(decoded){
-      decoded = decoded.toString()
-    }
+    decoded = decoded.toString()
     assert.deepEqual(hex, decoded);
 	});
   
