@@ -107,6 +107,9 @@ describe('when initializing', () => {
       seededHashids.initialize({scopes: defaults.scopes, charset: 1234567890});
 		});
     assert.throws(() => {
+      seededHashids.initialize({scopes: defaults.scopes, charset: '11223344556677889900'});
+		});
+    assert.throws(() => {
       seededHashids.initialize({scopes: defaults.scopes, charset: {}});
 		});
 	});
