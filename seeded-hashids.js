@@ -162,7 +162,7 @@ module.exports = {
   },
   
   getScopes: function() {
-    return _scopes;
+    return Object.keys(_scopes);
   },
   
   getCharset: function() {

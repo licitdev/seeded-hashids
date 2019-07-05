@@ -3,4 +3,5 @@ node_js:
   - "6"
   - "7"
   - "8"
-after_script: npm run coverage
+after_script:
+  - npm run coverage

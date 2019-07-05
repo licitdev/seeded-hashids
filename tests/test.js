@@ -8,7 +8,8 @@ var defaults = {
   ],
   objectId: require('mongoose').Types.ObjectId, // Can also use require('mongodb').ObjectId
   hashLength: 8,
-  charset: '1234567890abcdef'
+  charset: '1234567890abcdef',
+  shuffleOutput: true
 };
 
 describe('when uninitialized', () => {
@@ -118,7 +119,10 @@ describe('when initializing', () => {
       seededHashids.initialize({scopes: defaults.scopes, objectId: {}});
 		});
     assert.throws(() => {
-      seededHashids.initialize({scopes: defaults.scopes, objectId: function(v){return null}});
+      seededHashids.initialize({scopes: defaults.scopes, objectId: function(v){return null;}});
+		});
+    assert.throws(() => {
+      seededHashids.initialize({scopes: defaults.scopes, objectId: function(v){return '';}});
 		});
 	});
   
@@ -151,6 +155,30 @@ describe('when initialized', () => {
 		assert.throws(() => {
       seededHashids.initialize();
 		});
+	});
+  
+  it('should get the same value for .getInitialized', () => {
+    assert.deepEqual(true, seededHashids.getInitialized());
+	});
+  
+  it('should get the same value for .getScopes', () => {
+    assert.deepEqual(Object.keys(defaults.scopes), Object.keys(seededHashids.getScopes()));
+	});
+  
+  it('should get the same value for .getCharset', () => {
+    assert.deepEqual(defaults.charset, seededHashids.getCharset());
+	});
+  
+  it('should get the same value for .getHashLength', () => {
+    assert.deepEqual(defaults.hashLength, seededHashids.getHashLength());
+	});
+  
+  it('should get the same value for .getShuffleOutput', () => {
+    assert.deepEqual(defaults.shuffleOutput, seededHashids.getShuffleOutput());
+	});
+  
+  it('should get the same value for .getObjectId', () => {
+    assert.deepEqual(defaults.objectId, seededHashids.getObjectId());
 	});
 
   describe('when using .encode', () => {
@@ -340,8 +368,6 @@ describe('when initialized', () => {
   
 });
 
-
-
 describe('when initialized without objectId', () => {
   
   before(() => {
@@ -364,9 +390,29 @@ describe('when initialized without objectId', () => {
 		});
 	});
   
+  it('should get the same value for .getScopes', () => {
+    assert.deepEqual(Object.keys(defaults.scopes), Object.keys(seededHashids.getScopes()));
+	});
+  
+  it('should get the same value for .getCharset', () => {
+    assert.deepEqual(defaults.charset, seededHashids.getCharset());
+	});
+  
+  it('should get the same value for .getHashLength', () => {
+    assert.deepEqual(defaults.hashLength, seededHashids.getHashLength());
+	});
+  
+  it('should get the same value for .getShuffleOutput', () => {
+    assert.deepEqual(defaults.shuffleOutput, seededHashids.getShuffleOutput());
+	});
+  
+  it('should get the same value for .getObjectId', () => {
+    assert.equal(null, seededHashids.getObjectId());
+	});
+  
 });
 
-describe('when encoding and decoding', () => {
+describe('when encoding and decoding with shuffle', () => {
   
   before(() => {
     seededHashids.reset();
@@ -422,6 +468,150 @@ describe('when encoding and decoding', () => {
       decoded = decoded.toString()
     }
     assert.deepEqual(hex, decoded);
+	});
+  
+  it('should return NaN when .decode with an invalid hash without salt', () => {
+    var hash = 'fakehash';
+    var decoded = seededHashids.decode('user', hash);
+    assert.deepEqual(NaN, decoded);
+	});
+  
+  it('should return NaN when .decode with an invalid hash without salt', () => {
+    var hash = 'fakehash';
+    var salt = 'somesalt';
+    var decoded = seededHashids.decode('user', hash, salt);
+    assert.deepEqual(NaN, decoded);
+	});
+  
+  it('should return an empty string when .decodeHex with an invalid hash without salt', () => {
+    var hash = 'fakehash';
+    var decoded = seededHashids.decodeHex('user', hash);
+    assert.deepEqual('', decoded);
+	});
+  
+  it('should return an empty string when .decodeHex with an invalid hash without salt', () => {
+    var hash = 'fakehash';
+    var salt = 'somesalt';
+    var decoded = seededHashids.decodeHex('user', hash, salt);
+    assert.deepEqual('', decoded);
+	});
+  
+  it('should return null when .decodeObjectId with an invalid hash without salt', () => {
+    var hex = 'abcdef1234567890';
+    var encoded = seededHashids.encodeHex('user', hex);
+    var decoded = seededHashids.decodeObjectId('user', encoded);
+    assert.deepEqual(null, decoded);
+	});
+  
+  it('should return null when .decodeObjectId with an invalid hash without salt', () => {
+    var hex = 'abcdef1234567890';
+    var salt = 'somesalt';
+    var encoded = seededHashids.encodeHex('user', hex, salt);
+    var decoded = seededHashids.decodeObjectId('user', encoded, salt);
+    assert.deepEqual(null, decoded);
+	});
+  
+});
+
+describe('when encoding and decoding without shuffle', () => {
+  
+  before(() => {
+    seededHashids.reset();
+    defaults.shuffleOutput = false;
+    seededHashids.initialize(defaults);
+    delete defaults.shuffleOutput;
+  });
+  
+  it('should run .encode and .decode correctly without salt', () => {
+    var number = 12345678;
+    var encoded = seededHashids.encode('user', number);
+    var decoded = seededHashids.decode('user', encoded);
+    assert.deepEqual(number, decoded);
+	});
+  
+  it('should run .encode and .decode correctly with salt', () => {
+    var number = 12345678;
+    var salt = 'somesalt';
+    var encoded = seededHashids.encode('user', number, salt);
+    var decoded = seededHashids.decode('user', encoded, salt);
+    assert.deepEqual(number, decoded);
+	});
+  
+  it('should run .encodeHex and .decodeHex correctly without salt', () => {
+    var hex = 'abcdef1234567890';
+    var encoded = seededHashids.encodeHex('user', hex);
+    var decoded = seededHashids.decodeHex('user', encoded);
+    assert.deepEqual(hex, decoded);
+	});
+  
+  it('should run .encodeHex and .decodeHex correctly with salt', () => {
+    var hex = 'abcdef1234567890';
+    var salt = 'somesalt';
+    var encoded = seededHashids.encodeHex('user', hex, salt);
+    var decoded = seededHashids.decodeHex('user', encoded, salt);
+    assert.deepEqual(hex, decoded);
+	});
+  
+  it('should run .encodeHex and .decodeObjectId correctly without salt', () => {
+    var hex = 'abcdef1234567890abcdef12';
+    var encoded = seededHashids.encodeHex('user', hex);
+    var decoded = seededHashids.decodeObjectId('user', encoded);
+    if(decoded){
+      decoded = decoded.toString()
+    }
+    assert.deepEqual(hex, decoded);
+	});
+  
+  it('should run .encodeHex and .decodeObjectId correctly with salt', () => {
+    var hex = 'abcdef1234567890abcdef12';
+    var salt = 'somesalt';
+    var encoded = seededHashids.encodeHex('user', hex, salt);
+    var decoded = seededHashids.decodeObjectId('user', encoded, salt);
+    if(decoded){
+      decoded = decoded.toString()
+    }
+    assert.deepEqual(hex, decoded);
+	});
+  
+  it('should return NaN when .decode with an invalid hash without salt', () => {
+    var hash = 'fakehash';
+    var decoded = seededHashids.decode('user', hash);
+    assert.deepEqual(NaN, decoded);
+	});
+  
+  it('should return NaN when .decode with an invalid hash without salt', () => {
+    var hash = 'fakehash';
+    var salt = 'somesalt';
+    var decoded = seededHashids.decode('user', hash, salt);
+    assert.deepEqual(NaN, decoded);
+	});
+  
+  it('should return an empty string when .decodeHex with an invalid hash without salt', () => {
+    var hash = 'fakehash';
+    var decoded = seededHashids.decodeHex('user', hash);
+    assert.deepEqual('', decoded);
+	});
+  
+  it('should return an empty string when .decodeHex with an invalid hash without salt', () => {
+    var hash = 'fakehash';
+    var salt = 'somesalt';
+    var decoded = seededHashids.decodeHex('user', hash, salt);
+    assert.deepEqual('', decoded);
+	});
+  
+  it('should return null when .decodeObjectId with an invalid hash without salt', () => {
+    var hex = 'abcdef1234567890';
+    var encoded = seededHashids.encodeHex('user', hex);
+    var decoded = seededHashids.decodeObjectId('user', encoded);
+    assert.deepEqual(null, decoded);
+	});
+  
+  it('should return null when .decodeObjectId with an invalid hash without salt', () => {
+    var hex = 'abcdef1234567890';
+    var salt = 'somesalt';
+    var encoded = seededHashids.encodeHex('user', hex, salt);
+    var decoded = seededHashids.decodeObjectId('user', encoded, salt);
+    assert.deepEqual(null, decoded);
 	});
   
 });
