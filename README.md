@@ -77,7 +77,7 @@ console.log(decoded); // 12345678
 
 ## API
 
-### initialize (options) : noResult `undefined`
+### **initialize (options)** : noResult `undefined`
 
 ```javascript
 Hasher.initialize({
@@ -89,7 +89,7 @@ Hasher.initialize({
 });
 ```
 
-#### **options `Object`**
+#### options `Object`
 
 Field | Required | Type | Defaults
 :---  | :---: | :---: | :---
@@ -135,7 +135,7 @@ var shuffleOutput = true;
 var objectId = require('mongoose').Types.ObjectId;
 ```
 ---
-### encode (scope, number, [seed]) : Hashid `String`
+### **encode (scope, number, [seed])** : Hashid `String`
 
 ```javascript
 var userId = Hasher.encode('user', 12345678);
@@ -150,7 +150,7 @@ var userId = Hasher.encode('user', 12345678);
 #### seed `String` *(optional)*
 - This seed is used to generate a hashid that is "unique" for itself.
 ---
-### encodeHex (scope, hex, [seed]) : Hashid `String`
+### **encodeHex (scope, hex, [seed])** : Hashid `String`
 
 ```javascript
 var userId = Hasher.encodeHex('user', 'abcd1234', 'unique-seed');
@@ -166,7 +166,7 @@ var userId = Hasher.encodeHex('user', 'abcd1234', 'unique-seed');
 - This seed is used to generate a hashid that is "unique" for itself.
 
 ---
-### decode (scope, hash, [seed]) : decodedNumber `Number`
+### **decode (scope, hash, [seed])** : decodedNumber `Number`
 
 ```javascript
 var userId = Hasher.decode('user', 'X3e8L9EG', 'unique-seed');
@@ -181,7 +181,7 @@ var userId = Hasher.decode('user', 'X3e8L9EG', 'unique-seed');
 #### seed `String` *(optional)*
 - This seed is used to decode a hashid that is "unique" for itself.
 ---
-### decodeHex (scope, hash, [seed]) : decodedHex `String`
+### **decodeHex (scope, hash, [seed])** : decodedHex `String`
 
 ```javascript
 var userId = Hasher.decodeHex('user', 'MVVEdMKq', 'unique-seed');
@@ -196,7 +196,7 @@ var userId = Hasher.decodeHex('user', 'MVVEdMKq', 'unique-seed');
 #### seed `String` *(optional)*
 - This seed is used to decode a hashid that is "unique" for itself.
 ---
-### decodeObjectId (scope, hash, [seed]) : decodedObjectId `ObjectId`
+### **decodeObjectId (scope, hash, [seed])** : decodedObjectId `ObjectId`
 
 ```javascript
 var userId = Hasher.decodeObjectId('user', 'g9jM7B94VjJQhWj4AVNVqE', 'unique-seed');
@@ -211,37 +211,37 @@ var userId = Hasher.decodeObjectId('user', 'g9jM7B94VjJQhWj4AVNVqE', 'unique-see
 #### seed `String` *(optional)*
 - This seed is used to decode a hashid that is "unique" for itself.
 ---
-### isInitialized () : isInitialized `Boolean`
+### **isInitialized () : isInitialized** `Boolean`
 
 ```javascript
 var isInitialized = Hasher.isInitialized();
 ```
 ---
-### getScopes () : scopes `Array`
+### **getScopes () : scopes** `Array`
 
 ```javascript
 var scopes = Hasher.getScopes();
 ```
 ---
-### getCharset () : charset `String`
+### **getCharset () : charset** `String`
 
 ```javascript
 var charset = Hasher.getCharset();
 ```
 ---
-### getHashLength () : hashLength `Number`
+### **getHashLength () : hashLength** `Number`
 
 ```javascript
 var hashLength = Hasher.getHashLength();
 ```
 ---
-### getShuffleOutput () : shuffleOutput `Boolean`
+### **getShuffleOutput () : shuffleOutput** `Boolean`
 
 ```javascript
 var shuffleOutput = Hasher.getShuffleOutput();
 ```
 ---
-### getObjectId () : objectId `Function`
+### **getObjectId () : objectId** `Function`
 
 ```javascript
 var objectId = Hasher.getObjectId();
