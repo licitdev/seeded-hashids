@@ -226,6 +226,10 @@ module.exports = {
   initialize: function(options){ // [{scope: String, salt: String}, ...]
     _requireUninitialized();
     
+    if(!options || typeof options !== 'object'){
+      throw new Error('Invalid options object, required for initialization.');
+    }
+    
     if(options.charset !== undefined){
       if(typeof options.charset !== 'string'){
         throw new Error('Invalid charset, must a string with 16 or more unique characters.');

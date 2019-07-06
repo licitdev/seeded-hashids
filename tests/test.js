@@ -63,6 +63,18 @@ describe('when initializing', () => {
 		});
 	});
   
+  it('should throw an error if options object is invalid', () => {
+		assert.throws(() => {
+      seededHashids.initialize();
+		});
+    assert.throws(() => {
+      seededHashids.initialize('');
+		});
+    assert.throws(() => {
+      seededHashids.initialize(123);
+		});
+	});
+  
 	it('should throw an error if missing scopes', () => {
 		assert.throws(() => {
       seededHashids.initialize({});
