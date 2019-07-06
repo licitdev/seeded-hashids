@@ -483,7 +483,7 @@ describe('when encoding and decoding with shuffle', () => {
     assert.deepEqual(NaN, decoded);
 	});
   
-  it('should return NaN when .decode with an invalid hash without salt', () => {
+  it('should return NaN when .decode with an invalid hash with salt', () => {
     let hash = 'fakehash';
     let salt = 'somesalt';
     let decoded = seededHashids.decode('user', hash, salt);
@@ -496,7 +496,7 @@ describe('when encoding and decoding with shuffle', () => {
     assert.deepEqual('', decoded);
 	});
   
-  it('should return an empty string when .decodeHex with an invalid hash without salt', () => {
+  it('should return an empty string when .decodeHex with an invalid hash with salt', () => {
     let hash = 'fakehash';
     let salt = 'somesalt';
     let decoded = seededHashids.decodeHex('user', hash, salt);
@@ -510,7 +510,7 @@ describe('when encoding and decoding with shuffle', () => {
     assert.deepEqual(null, decoded);
 	});
   
-  it('should return null when .decodeObjectId with an invalid hash without salt', () => {
+  it('should return null when .decodeObjectId with an invalid hash with salt', () => {
     let hex = 'abcdef1234567890';
     let salt = 'somesalt';
     let encoded = seededHashids.encodeHex('user', hex, salt);
@@ -582,7 +582,7 @@ describe('when encoding and decoding without shuffle', () => {
     assert.deepEqual(NaN, decoded);
 	});
   
-  it('should return NaN when .decode with an invalid hash without salt', () => {
+  it('should return NaN when .decode with an invalid hash with salt', () => {
     let hash = 'fakehash';
     let salt = 'somesalt';
     let decoded = seededHashids.decode('user', hash, salt);
@@ -595,7 +595,7 @@ describe('when encoding and decoding without shuffle', () => {
     assert.deepEqual('', decoded);
 	});
   
-  it('should return an empty string when .decodeHex with an invalid hash without salt', () => {
+  it('should return an empty string when .decodeHex with an invalid hash with salt', () => {
     let hash = 'fakehash';
     let salt = 'somesalt';
     let decoded = seededHashids.decodeHex('user', hash, salt);
