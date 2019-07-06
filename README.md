@@ -78,7 +78,7 @@ console.log(decoded); // 12345678
 ## API
 
 ### **initialize (options)** : noResult `undefined`
-
+> To set up the required scopes and other parameters.
 ```javascript
 seededHashids.initialize({
 	scopes: scopes,
@@ -137,7 +137,7 @@ var objectId = require('mongoose').Types.ObjectId;
 ```
 ---
 ### **encode (scope, number, [seed])** : Hashid `String`
-
+> To encode positive numbers.
 ```javascript
 var userId = seededHashids.encode('user', 12345678);
 ```
@@ -152,7 +152,7 @@ var userId = seededHashids.encode('user', 12345678);
 - This seed is used to generate a hashid that is "unique" for itself.
 ---
 ### **encodeHex (scope, hex, [seed])** : Hashid `String`
-
+> To encode hex strings.
 ```javascript
 var userId = seededHashids.encodeHex('user', 'abcd1234', 'unique-seed');
 ```
@@ -168,7 +168,7 @@ var userId = seededHashids.encodeHex('user', 'abcd1234', 'unique-seed');
 
 ---
 ### **decode (scope, hash, [seed])** : decodedNumber `Number`
-
+> To decode hashes into positive numbers.
 ```javascript
 var userId = seededHashids.decode('user', 'X3e8L9EG', 'unique-seed');
 ```
@@ -183,7 +183,7 @@ var userId = seededHashids.decode('user', 'X3e8L9EG', 'unique-seed');
 - This seed is used to decode a hashid that is "unique" for itself.
 ---
 ### **decodeHex (scope, hash, [seed])** : decodedHex `String`
-
+> To decode hashes into hex strings.
 ```javascript
 var userId = seededHashids.decodeHex('user', 'MVVEdMKq', 'unique-seed');
 ```
@@ -198,7 +198,7 @@ var userId = seededHashids.decodeHex('user', 'MVVEdMKq', 'unique-seed');
 - This seed is used to decode a hashid that is "unique" for itself.
 ---
 ### **decodeObjectId (scope, hash, [seed])** : decodedObjectId `ObjectId`
-
+> To decode hashes into objectIds.
 ```javascript
 var userId = seededHashids.decodeObjectId('user', 'g9jM7B94VjJQhWj4AVNVqE', 'unique-seed');
 ```
@@ -212,38 +212,44 @@ var userId = seededHashids.decodeObjectId('user', 'g9jM7B94VjJQhWj4AVNVqE', 'uni
 #### seed `String` *(optional)*
 - This seed is used to decode a hashid that is "unique" for itself.
 ---
-### **isInitialized () : isInitialized** `Boolean`
-
+### **reset ()** : noResult `undefined`
+> To reset seededHashids, needs to initialize() again before usage.
+```javascript
+seededHashids.reset();
+```
+---
+### **isInitialized ()** : isInitialized `Boolean`
+> To check if seededHashids is initialized.
 ```javascript
 var isInitialized = seededHashids.isInitialized();
 ```
 ---
-### **getScopes () : scopes** `Array`
-
+### **getScopes ()** : scopes `Array`
+> To get the string array of scopes.
 ```javascript
 var scopes = seededHashids.getScopes();
 ```
 ---
-### **getCharset () : charset** `String`
-
+### **getCharset ()** : charset `String`
+> To get the charset string.
 ```javascript
 var charset = seededHashids.getCharset();
 ```
 ---
-### **getHashLength () : hashLength** `Number`
-
+### **getHashLength ()** : hashLength `Number`
+> To get the hash length.
 ```javascript
 var hashLength = seededHashids.getHashLength();
 ```
 ---
-### **getShuffleOutput () : shuffleOutput** `Boolean`
-
+### **getShuffleOutput ()** : shuffleOutput `Boolean`
+> To check if the output is shuffled.
 ```javascript
 var shuffleOutput = seededHashids.getShuffleOutput();
 ```
 ---
-### **getObjectId () : objectId** `Function`
-
+### **getObjectId ()** : objectId `Function`
+> To get the objectId function to see if available.
 ```javascript
 var objectId = seededHashids.getObjectId();
 ```
