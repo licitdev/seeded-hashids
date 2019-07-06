@@ -7,7 +7,7 @@ Generate seeded Hashids that is unique per scope.
 [![NPM version][npm-version-image]][npm-url]
 [![License][license-image]][license-url]
 
-**Seeded-Hashids** is an easy to use library to generate seeded [Hashids](http://hashids.org/javascript) which is unique to a seed based on a user or group.
+**Seeded-Hashids** is an easy to use library to generate seeded [Hashids](http://hashids.org/javascript) which is unique to a seed based on a user or group. Hide the raw userids or objectids from end users.
 
 An example is to generate Hashids that are unique to a particular application. Even if multiple applications shared their userids with each other, the users could not be correlated or identified by their userids.
 
@@ -124,6 +124,7 @@ var hashLength = 8;
 
 ##### shuffleOutput `Boolean` *(optional)*
 - This value determines if the hash will be shuffled after encoding by Hashids and before decoding by Hashids. 
+- Each scope shuffles the output differently.
 ```javascript
 var shuffleOutput = true;
 ```
@@ -249,15 +250,15 @@ var objectId = seededHashids.getObjectId();
 
 
 ## Pitfalls
-1. Encoding of array of numbers is not supported.
-2. Encoding of negative numbers is not supported.
-3. The uniqueness of output is highly dependent on the encoded data and the seed.
+1. Encoding of an array of numbers is **not** supported.
+2. Encoding of negative numbers are **not** supported.
+3. The uniqueness of output **if seeded** is highly dependent on what the encoded data is and the seed.
 4. Do not use this library as a security tool and do not encode sensitive data. This is **not** an encryption library.
 
 ## Recommendations
 1. Salts should not be too short.
 2. Seeds should not be too short. Recommended to use **long** hex strings such as ObjectIds.
-2. Recommend to encode longer hex strings such as ObjectIds with a long salt to increase "uniqueness".
+2. Recommend to encode **longer** hex strings such as ObjectIds with a long salt to increase "uniqueness".
 
 ## License
 
