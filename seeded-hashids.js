@@ -1,26 +1,26 @@
-var ShuffleSeed = require('shuffle-seed');
-var HashIds = require('hashids');
+const ShuffleSeed = require('shuffle-seed');
+const HashIds = require('hashids');
 
-var HexPattern = /^[a-fA-F0-9]+$/;
-var Defaults = {
+const HexPattern = /^[a-fA-F0-9]+$/;
+const Defaults = {
   scopes: {},
   charset: 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789', // Removed 1, 0, iI, oO which could look confusing
   hashLength: 8,
   shuffleOutput: true,
-  objectId: null
+  objectId: null // Use require('mongoose').Types.ObjectId or require('mongodb').ObjectId or similar
 };
 
-var _initialized = false;
-var _scopes = Defaults.scopes;
-var _charset = Defaults.charset; 
-var _hashLength = Defaults.hashLength;
-var _shuffleOutput = Defaults.shuffleOutput;
-var _objectId = Defaults.objectId;
+let _initialized = false;
+let _scopes = Defaults.scopes;
+let _charset = Defaults.charset; 
+let _hashLength = Defaults.hashLength;
+let _shuffleOutput = Defaults.shuffleOutput;
+let _objectId = Defaults.objectId;
 
 function _generateRandomObjectId(){ // Used for testing the ObjectId variable
-  var text = "";
-  var charList = "0123456789abcdef";
-  for(var i=0; i < 24; i++){  
+  let text = "";
+  let charList = "0123456789abcdef";
+  for(let i = 0; i < 24; i++){  
     text += charList.charAt(Math.floor(Math.random() * charList.length));
   }
   return text;
@@ -43,7 +43,7 @@ function _getShuffledCharset(seed) {
 }
 
 function _encode(useHex, scope, data, seed) {
-	var selectedHasher = _scopes[scope];
+	let selectedHasher = _scopes[scope];
 
   if(!selectedHasher){
     throw new Error('Missing scope.');
@@ -71,7 +71,7 @@ function _encode(useHex, scope, data, seed) {
 		data = _shuffleSeededString(data, scope + seed);
 	}
 
-  var hash;
+  let hash;
   
   if(useHex){
 		// Hex based hash
@@ -94,7 +94,7 @@ function _encode(useHex, scope, data, seed) {
 }
 
 function _decode(useHex, scope, hash, seed) {
-	var selectedHasher = _scopes[scope];
+	let selectedHasher = _scopes[scope];
   
   if(!selectedHasher){
     throw new Error('Missing scope.');
@@ -112,7 +112,7 @@ function _decode(useHex, scope, hash, seed) {
     hash = _unshuffleSeededString(hash, selectedHasher.alphabet);
   }
   
-	var data;
+	let data;
 
   if (useHex) {
 		// Hex based hash
@@ -213,7 +213,7 @@ module.exports = {
     }
     
     // Do decode as per hex
-    var data = _decode(true, scope, hash, seed);
+    let data = _decode(true, scope, hash, seed);
     
     // Cast to ObjectId if is 24 character hex string
     if(data && data.length === 24){
@@ -231,8 +231,8 @@ module.exports = {
         throw new Error('Invalid charset, must a string with 16 or more unique characters.');
       }
 
-      var uniqueCharacters = '';
-      for(var x = 0; x < options.charset.length; x++){
+      let uniqueCharacters = '';
+      for(let x = 0; x < options.charset.length; x++){
         if(uniqueCharacters.indexOf(options.charset[x]) === -1){
           uniqueCharacters += options.charset[x];
         }
@@ -261,11 +261,11 @@ module.exports = {
     
     if(options.objectId !== undefined){
       if(typeof options.objectId !== 'function'){
-        throw new Error('Invalid objectId, should pass in Mongoose or MongoDB ObjectId variable.');
+        throw new Error('Invalid objectId, should pass in Mongoose or MongoDB ObjectId letiable.');
       }
 
       try{
-        var randomObjectId = _generateRandomObjectId();
+        let randomObjectId = _generateRandomObjectId();
         if(options.objectId(randomObjectId).toString() !== randomObjectId){
           throw new Error('Invalid objectId, should pass in Mongoose or MongoDB ObjectId variable.');
         }
@@ -281,8 +281,8 @@ module.exports = {
       throw new Error('Invalid scopes. Must be an array of {scope, salt} which are strings.');
     }
     
-    var scopes = {};
-    for(var i = 0; i < options.scopes.length; i++){
+    let scopes = {};
+    for(let i = 0; i < options.scopes.length; i++){
       if(!options.scopes[i].scope ||
          typeof options.scopes[i].scope !== 'string' ||
          !options.scopes[i].salt ||

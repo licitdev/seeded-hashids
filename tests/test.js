@@ -1,7 +1,7 @@
-var seededHashids = require('../seeded-hashids');
-var assert = require('chai').assert;
+const seededHashids = require('../seeded-hashids');
+const assert = require('chai').assert;
 
-var defaults = {
+const defaults = {
   scopes: [
     {scope: 'user', salt: 'abcd'},
     {scope: 'profile', salt: '1234'},
@@ -122,30 +122,35 @@ describe('when initializing', () => {
       seededHashids.initialize({scopes: defaults.scopes, objectId: {}});
 		});
     assert.throws(() => {
-      seededHashids.initialize({scopes: defaults.scopes, objectId: function(v){return null;}});
+      seededHashids.initialize({scopes: defaults.scopes, objectId: function(){return null;}});
 		});
     assert.throws(() => {
-      seededHashids.initialize({scopes: defaults.scopes, objectId: function(v){return '';}});
-		});
-	});
-  
-  it('should not throw an error if valid initialization with objectId', () => {
-		assert.doesNotThrow(() => {
-      seededHashids.initialize(defaults);
+      seededHashids.initialize({scopes: defaults.scopes, objectId: function(){return '';}});
 		});
 	});
   
   it('should not throw an error if valid initialization without objectId', () => {
 		assert.doesNotThrow(() => {
-      var temp = defaults.objectId;
       delete defaults.objectId;
       seededHashids.initialize(defaults);
-      defaults.objectId = temp;
+		});
+	});
+  
+  it('should not throw an error if valid initialization with mongodb objectId', () => {
+		assert.doesNotThrow(() => {
+      defaults.objectId = require('mongodb').ObjectId;
+      seededHashids.initialize(defaults);
+		});
+	});
+  
+  it('should not throw an error if valid initialization with mongoose objectId', () => {
+		assert.doesNotThrow(() => {
+      defaults.objectId = require('mongoose').Types.ObjectId;
+      seededHashids.initialize(defaults);
 		});
 	});
   
 });
-
 
 describe('when initialized', () => {
   
@@ -378,7 +383,7 @@ describe('when initialized without objectId', () => {
   
   before(() => {
     seededHashids.reset();
-    var temp = defaults.objectId;
+    let temp = defaults.objectId;
     delete defaults.objectId;
     seededHashids.initialize(defaults);
     defaults.objectId = temp;
@@ -426,90 +431,90 @@ describe('when encoding and decoding with shuffle', () => {
   });
   
   it('should run .encode and .decode correctly without salt', () => {
-    var number = 12345678;
-    var encoded = seededHashids.encode('user', number);
-    var decoded = seededHashids.decode('user', encoded);
+    let number = 12345678;
+    let encoded = seededHashids.encode('user', number);
+    let decoded = seededHashids.decode('user', encoded);
     assert.deepEqual(number, decoded);
 	});
   
   it('should run .encode and .decode correctly with salt', () => {
-    var number = 12345678;
-    var salt = 'somesalt';
-    var encoded = seededHashids.encode('user', number, salt);
-    var decoded = seededHashids.decode('user', encoded, salt);
+    let number = 12345678;
+    let salt = 'somesalt';
+    let encoded = seededHashids.encode('user', number, salt);
+    let decoded = seededHashids.decode('user', encoded, salt);
     assert.deepEqual(number, decoded);
 	});
   
   it('should run .encodeHex and .decodeHex correctly without salt', () => {
-    var hex = 'abcdef1234567890';
-    var encoded = seededHashids.encodeHex('user', hex);
-    var decoded = seededHashids.decodeHex('user', encoded);
+    let hex = 'abcdef1234567890';
+    let encoded = seededHashids.encodeHex('user', hex);
+    let decoded = seededHashids.decodeHex('user', encoded);
     assert.deepEqual(hex, decoded);
 	});
   
   it('should run .encodeHex and .decodeHex correctly with salt', () => {
-    var hex = 'abcdef1234567890';
-    var salt = 'somesalt';
-    var encoded = seededHashids.encodeHex('user', hex, salt);
-    var decoded = seededHashids.decodeHex('user', encoded, salt);
+    let hex = 'abcdef1234567890';
+    let salt = 'somesalt';
+    let encoded = seededHashids.encodeHex('user', hex, salt);
+    let decoded = seededHashids.decodeHex('user', encoded, salt);
     assert.deepEqual(hex, decoded);
 	});
   
   it('should run .encodeHex and .decodeObjectId correctly without salt', () => {
-    var hex = 'abcdef1234567890abcdef12';
-    var encoded = seededHashids.encodeHex('user', hex);
-    var decoded = seededHashids.decodeObjectId('user', encoded);
+    let hex = 'abcdef1234567890abcdef12';
+    let encoded = seededHashids.encodeHex('user', hex);
+    let decoded = seededHashids.decodeObjectId('user', encoded);
     decoded = decoded.toString()
     assert.deepEqual(hex, decoded);
 	});
   
   it('should run .encodeHex and .decodeObjectId correctly with salt', () => {
-    var hex = 'abcdef1234567890abcdef12';
-    var salt = 'somesalt';
-    var encoded = seededHashids.encodeHex('user', hex, salt);
-    var decoded = seededHashids.decodeObjectId('user', encoded, salt);
+    let hex = 'abcdef1234567890abcdef12';
+    let salt = 'somesalt';
+    let encoded = seededHashids.encodeHex('user', hex, salt);
+    let decoded = seededHashids.decodeObjectId('user', encoded, salt);
     decoded = decoded.toString()
     assert.deepEqual(hex, decoded);
 	});
   
   it('should return NaN when .decode with an invalid hash without salt', () => {
-    var hash = 'fakehash';
-    var decoded = seededHashids.decode('user', hash);
+    let hash = 'fakehash';
+    let decoded = seededHashids.decode('user', hash);
     assert.deepEqual(NaN, decoded);
 	});
   
   it('should return NaN when .decode with an invalid hash without salt', () => {
-    var hash = 'fakehash';
-    var salt = 'somesalt';
-    var decoded = seededHashids.decode('user', hash, salt);
+    let hash = 'fakehash';
+    let salt = 'somesalt';
+    let decoded = seededHashids.decode('user', hash, salt);
     assert.deepEqual(NaN, decoded);
 	});
   
   it('should return an empty string when .decodeHex with an invalid hash without salt', () => {
-    var hash = 'fakehash';
-    var decoded = seededHashids.decodeHex('user', hash);
+    let hash = 'fakehash';
+    let decoded = seededHashids.decodeHex('user', hash);
     assert.deepEqual('', decoded);
 	});
   
   it('should return an empty string when .decodeHex with an invalid hash without salt', () => {
-    var hash = 'fakehash';
-    var salt = 'somesalt';
-    var decoded = seededHashids.decodeHex('user', hash, salt);
+    let hash = 'fakehash';
+    let salt = 'somesalt';
+    let decoded = seededHashids.decodeHex('user', hash, salt);
     assert.deepEqual('', decoded);
 	});
   
   it('should return null when .decodeObjectId with an invalid hash without salt', () => {
-    var hex = 'abcdef1234567890';
-    var encoded = seededHashids.encodeHex('user', hex);
-    var decoded = seededHashids.decodeObjectId('user', encoded);
+    let hex = 'abcdef1234567890';
+    let encoded = seededHashids.encodeHex('user', hex);
+    let decoded = seededHashids.decodeObjectId('user', encoded);
     assert.deepEqual(null, decoded);
 	});
   
   it('should return null when .decodeObjectId with an invalid hash without salt', () => {
-    var hex = 'abcdef1234567890';
-    var salt = 'somesalt';
-    var encoded = seededHashids.encodeHex('user', hex, salt);
-    var decoded = seededHashids.decodeObjectId('user', encoded, salt);
+    let hex = 'abcdef1234567890';
+    let salt = 'somesalt';
+    let encoded = seededHashids.encodeHex('user', hex, salt);
+    let decoded = seededHashids.decodeObjectId('user', encoded, salt);
     assert.deepEqual(null, decoded);
 	});
   
@@ -525,90 +530,90 @@ describe('when encoding and decoding without shuffle', () => {
   });
   
   it('should run .encode and .decode correctly without salt', () => {
-    var number = 12345678;
-    var encoded = seededHashids.encode('user', number);
-    var decoded = seededHashids.decode('user', encoded);
+    let number = 12345678;
+    let encoded = seededHashids.encode('user', number);
+    let decoded = seededHashids.decode('user', encoded);
     assert.deepEqual(number, decoded);
 	});
   
   it('should run .encode and .decode correctly with salt', () => {
-    var number = 12345678;
-    var salt = 'somesalt';
-    var encoded = seededHashids.encode('user', number, salt);
-    var decoded = seededHashids.decode('user', encoded, salt);
+    let number = 12345678;
+    let salt = 'somesalt';
+    let encoded = seededHashids.encode('user', number, salt);
+    let decoded = seededHashids.decode('user', encoded, salt);
     assert.deepEqual(number, decoded);
 	});
   
   it('should run .encodeHex and .decodeHex correctly without salt', () => {
-    var hex = 'abcdef1234567890';
-    var encoded = seededHashids.encodeHex('user', hex);
-    var decoded = seededHashids.decodeHex('user', encoded);
+    let hex = 'abcdef1234567890';
+    let encoded = seededHashids.encodeHex('user', hex);
+    let decoded = seededHashids.decodeHex('user', encoded);
     assert.deepEqual(hex, decoded);
 	});
   
   it('should run .encodeHex and .decodeHex correctly with salt', () => {
-    var hex = 'abcdef1234567890';
-    var salt = 'somesalt';
-    var encoded = seededHashids.encodeHex('user', hex, salt);
-    var decoded = seededHashids.decodeHex('user', encoded, salt);
+    let hex = 'abcdef1234567890';
+    let salt = 'somesalt';
+    let encoded = seededHashids.encodeHex('user', hex, salt);
+    let decoded = seededHashids.decodeHex('user', encoded, salt);
     assert.deepEqual(hex, decoded);
 	});
   
   it('should run .encodeHex and .decodeObjectId correctly without salt', () => {
-    var hex = 'abcdef1234567890abcdef12';
-    var encoded = seededHashids.encodeHex('user', hex);
-    var decoded = seededHashids.decodeObjectId('user', encoded);
+    let hex = 'abcdef1234567890abcdef12';
+    let encoded = seededHashids.encodeHex('user', hex);
+    let decoded = seededHashids.decodeObjectId('user', encoded);
     decoded = decoded.toString()
     assert.deepEqual(hex, decoded);
 	});
   
   it('should run .encodeHex and .decodeObjectId correctly with salt', () => {
-    var hex = 'abcdef1234567890abcdef12';
-    var salt = 'somesalt';
-    var encoded = seededHashids.encodeHex('user', hex, salt);
-    var decoded = seededHashids.decodeObjectId('user', encoded, salt);
+    let hex = 'abcdef1234567890abcdef12';
+    let salt = 'somesalt';
+    let encoded = seededHashids.encodeHex('user', hex, salt);
+    let decoded = seededHashids.decodeObjectId('user', encoded, salt);
     decoded = decoded.toString()
     assert.deepEqual(hex, decoded);
 	});
   
   it('should return NaN when .decode with an invalid hash without salt', () => {
-    var hash = 'fakehash';
-    var decoded = seededHashids.decode('user', hash);
+    let hash = 'fakehash';
+    let decoded = seededHashids.decode('user', hash);
     assert.deepEqual(NaN, decoded);
 	});
   
   it('should return NaN when .decode with an invalid hash without salt', () => {
-    var hash = 'fakehash';
-    var salt = 'somesalt';
-    var decoded = seededHashids.decode('user', hash, salt);
+    let hash = 'fakehash';
+    let salt = 'somesalt';
+    let decoded = seededHashids.decode('user', hash, salt);
     assert.deepEqual(NaN, decoded);
 	});
   
   it('should return an empty string when .decodeHex with an invalid hash without salt', () => {
-    var hash = 'fakehash';
-    var decoded = seededHashids.decodeHex('user', hash);
+    let hash = 'fakehash';
+    let decoded = seededHashids.decodeHex('user', hash);
     assert.deepEqual('', decoded);
 	});
   
   it('should return an empty string when .decodeHex with an invalid hash without salt', () => {
-    var hash = 'fakehash';
-    var salt = 'somesalt';
-    var decoded = seededHashids.decodeHex('user', hash, salt);
+    let hash = 'fakehash';
+    let salt = 'somesalt';
+    let decoded = seededHashids.decodeHex('user', hash, salt);
     assert.deepEqual('', decoded);
 	});
   
   it('should return null when .decodeObjectId with an invalid hash without salt', () => {
-    var hex = 'abcdef1234567890';
-    var encoded = seededHashids.encodeHex('user', hex);
-    var decoded = seededHashids.decodeObjectId('user', encoded);
+    let hex = 'abcdef1234567890';
+    let encoded = seededHashids.encodeHex('user', hex);
+    let decoded = seededHashids.decodeObjectId('user', encoded);
     assert.deepEqual(null, decoded);
 	});
   
-  it('should return null when .decodeObjectId with an invalid hash without salt', () => {
-    var hex = 'abcdef1234567890';
-    var salt = 'somesalt';
-    var encoded = seededHashids.encodeHex('user', hex);
-    var decoded = seededHashids.decodeObjectId('user', encoded);
+  it('should return null when .decodeObjectId with an invalid hash with salt', () => {
+    let hex = 'abcdef1234567890';
+    let salt = 'somesalt';
+    let encoded = seededHashids.encodeHex('user', hex, salt);
+    let decoded = seededHashids.decodeObjectId('user', encoded, salt);
     assert.deepEqual(null, decoded);
 	});
   
