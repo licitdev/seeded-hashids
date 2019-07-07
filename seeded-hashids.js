@@ -5,7 +5,7 @@ const HexPattern = /^[a-fA-F0-9]+$/;
 const Defaults = {
   scopes: {},
   charset: 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789', // Removed 1, 0, iI, oO which could look confusing
-  hashLength: 8,
+  minOutputLength: 8,
   shuffleOutput: true,
   objectId: null // Use require('mongoose').Types.ObjectId or require('mongodb').ObjectId or similar
 };
@@ -13,7 +13,7 @@ const Defaults = {
 let _initialized = false;
 let _scopes = Defaults.scopes;
 let _charset = Defaults.charset;
-let _hashLength = Defaults.hashLength;
+let _minOutputLength = Defaults.minOutputLength;
 let _shuffleOutput = Defaults.shuffleOutput;
 let _objectId = Defaults.objectId;
 
@@ -27,7 +27,7 @@ function _generateRandomObjectId() { // Used for testing the ObjectId variable
 }
 
 function _createHasher(salt) {
-  return new HashIds(salt, _hashLength, _getShuffledCharset(salt));
+  return new HashIds(salt, _minOutputLength, _getShuffledCharset(salt));
 }
 
 function _shuffleSeededString(str, seed) {
@@ -183,8 +183,8 @@ module.exports = {
     return _charset;
   },
 
-  getHashLength: function() {
-    return _hashLength;
+  getMinOutputLength: function() {
+    return _minOutputLength;
   },
 
   getShuffleOutput: function() {
@@ -263,14 +263,14 @@ module.exports = {
       _charset = uniqueCharacters;
     }
 
-    if (options.hashLength !== undefined) {
-      options.hashLength = parseInt(options.hashLength);
+    if (options.minOutputLength !== undefined) {
+      options.minOutputLength = parseInt(options.minOutputLength);
 
-      if (isNaN(options.hashLength) || options.hashLength < 0) {
-        throw new Error('Invalid hashLength, must be a positive number.');
+      if (isNaN(options.minOutputLength) || options.minOutputLength < 0) {
+        throw new Error('Invalid minOutputLength, must be a positive number.');
       }
 
-      _hashLength = options.hashLength;
+      _minOutputLength = options.minOutputLength;
     }
 
     if (options.shuffleOutput !== undefined) {
@@ -326,7 +326,7 @@ module.exports = {
   reset: function() {
     _charset = Defaults.charset;
     _scopes = Defaults.scopes;
-    _hashLength = Defaults.hashLength;
+    _minOutputLength = Defaults.minOutputLength;
     _shuffleOutput = Defaults.shuffleOutput;
     _objectId = Defaults.objectId;
     _initialized = false;

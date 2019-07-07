@@ -12,7 +12,7 @@ const defaults = {
     },
   ],
   charset: '1234567890abcdef',
-  hashLength: 8,
+  minOutputLength: 8,
   shuffleOutput: true,
   objectId: require('mongoose').Types.ObjectId, // Can also use require('mongodb').ObjectId
 };
@@ -40,12 +40,6 @@ describe('when uninitialized', () => {
   it('should throw an error for .decodeHex', () => {
     assert.throws(() => {
       seededHashids.decodeHex();
-    });
-  });
-
-  it('should throw an error for .decodeObjectId', () => {
-    assert.throws(() => {
-      seededHashids.decodeObjectId();
     });
   });
 
@@ -144,23 +138,23 @@ describe('when initializing', () => {
     });
   });
 
-  it('should throw an error if invalid hashLength is passed', () => {
+  it('should throw an error if invalid minOutputLength is passed', () => {
     assert.throws(() => {
       seededHashids.initialize({
         scopes: defaults.scopes,
-        hashLength: -1
+        minOutputLength: -1
       });
     });
     assert.throws(() => {
       seededHashids.initialize({
         scopes: defaults.scopes,
-        hashLength: ''
+        minOutputLength: ''
       });
     });
     assert.throws(() => {
       seededHashids.initialize({
         scopes: defaults.scopes,
-        hashLength: {}
+        minOutputLength: {}
       });
     });
   });
@@ -274,8 +268,8 @@ describe('when initialized', () => {
     assert.deepEqual(defaults.charset, seededHashids.getCharset());
   });
 
-  it('should get the same value for .getHashLength', () => {
-    assert.deepEqual(defaults.hashLength, seededHashids.getHashLength());
+  it('should get the same value for .getMinOutputLength', () => {
+    assert.deepEqual(defaults.minOutputLength, seededHashids.getMinOutputLength());
   });
 
   it('should get the same value for .getShuffleOutput', () => {
@@ -503,8 +497,8 @@ describe('when initialized without objectId', () => {
     assert.deepEqual(defaults.charset, seededHashids.getCharset());
   });
 
-  it('should get the same value for .getHashLength', () => {
-    assert.deepEqual(defaults.hashLength, seededHashids.getHashLength());
+  it('should get the same value for .getMinOutputLength', () => {
+    assert.deepEqual(defaults.minOutputLength, seededHashids.getMinOutputLength());
   });
 
   it('should get the same value for .getShuffleOutput', () => {

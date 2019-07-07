@@ -86,7 +86,7 @@ console.log(decoded); // 12345678
 seededHashids.initialize({
     scopes: scopes,
     charset: charset,
-    hashLength: hashLength,
+    minOutputLength: minOutputLength,
     shuffleOutput: shuffleOutput,
     objectId: objectId
 });
@@ -98,7 +98,7 @@ Field | Required | Type | Defaults
 :---  | :---: | :---: | :---
 scopes | yes | `Array` | -
 charset | no | `String` | `a-z, A-Z, 2-9` without `i, I, o, O, 1, 0` to increase readibility
-hashLength | no | `Number` |  8
+minOutputLength | no | `Number` |  8
 shuffleOutput | no | `Boolean` | true
 objectId | no | `ObjectId` | -
 
@@ -121,10 +121,10 @@ let scope = [
 let charset = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 ```
 
-##### hashLength `Number` *(optional)*
+##### minOutputLength `Number` *(optional)*
 - This value is passed directly to Hashids, which adds padding to reach the length required.
 ```javascript
-let hashLength = 8;
+let minOutputLength = 8;
 ```
 
 ##### shuffleOutput `Boolean` *(optional)*
@@ -241,10 +241,10 @@ let scopes = seededHashids.getScopes();
 let charset = seededHashids.getCharset();
 ```
 ---
-### **getHashLength ()** : hashLength `Number`
+### **getMinOutputLength ()** : minOutputLength `Number`
 > To get the hash length.
 ```javascript
-let hashLength = seededHashids.getHashLength();
+let minOutputLength = seededHashids.getMinOutputLength();
 ```
 ---
 ### **getShuffleOutput ()** : shuffleOutput `Boolean`
@@ -265,8 +265,9 @@ let objectId = seededHashids.getObjectId();
 3. Seeds should **not** be too short. Recommended to use **long** hex strings such as ObjectIds or UUIDs.
 4. Encode **longer** hex strings such as ObjectIds or UUIDs.
 5. Always **validate** the output after decoding.
-6. Leave the shuffleOutput as **true**, which is the default value.
-7. Encode and decode as required, recommended for database to contain only **original** ids or hex strings.
+6. The minOutputLength should **not** be too small.
+7. Leave the shuffleOutput as **true**, which is the default value.
+8. Encode and decode as required, recommended for database to contain only **original** ids or hex strings.
 
 ## Pitfalls
 1. Encoding of an array of numbers is **not** supported.
