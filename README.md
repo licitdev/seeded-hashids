@@ -42,7 +42,7 @@ Sample code:
 const seededHashids = require('seeded-hashids');
 const ObjectId = require('mongoose').Types.ObjectId;
 const scopes = [
-	{scope: 'user', salt: 'some-salt'}
+  {scope: 'user', salt: 'some-salt'}
 ];
 
 seededHashids.initialize({scopes: scopes, objectId: ObjectId});
@@ -61,7 +61,7 @@ decoded = seededHashids.decodeHex('user', encoded, 'unique-seed');
 console.log(encoded); // 'dvdztVza'
 console.log(decoded); // 'abcd1234'
 
-// If a wrong seed is used to decode, will decode to a different output  
+// If a wrong seed is used to decode, will decode to a different output
 decoded = seededHashids.decodeHex('user', encoded, 'wrong-seed');
 console.log(decoded); // '' (Empty string)
 
@@ -84,7 +84,7 @@ console.log(decoded); // 12345678
 > To set up the required scopes and other parameters.
 ```javascript
 seededHashids.initialize({
-	scopes: scopes,
+    scopes: scopes,
     charset: charset,
     hashLength: hashLength,
     shuffleOutput: shuffleOutput,
@@ -109,7 +109,7 @@ objectId | no | `ObjectId` | -
 - Salts have to be unique.
 ```javascript
 let scope = [
-	{scope: 'user', salt: 'some-salt'},
+    {scope: 'user', salt: 'some-salt'},
     {scope: 'profile', salt: 'another-salt'},
 ];
 ```
@@ -128,14 +128,14 @@ let hashLength = 8;
 ```
 
 ##### shuffleOutput `Boolean` *(optional)*
-- This value determines if the output hash will be shuffled after encoding by Hashids and before decoding by Hashids. 
+- This value determines if the output hash will be shuffled after encoding by Hashids and before decoding by Hashids.
 - The output is shuffled based on the seed and attempts to prevent decoding using a wrong seed.
 ```javascript
 let shuffleOutput = true;
 ```
 
 ##### objectId `Function` *(optional)*
-- This object is required only if there is a need to cast the decoding output to an ObjectId using .decodeObjectId.
+- This object is required only if there is a need to cast the decoding output to an ObjectId using `.decodeObjectId`.
 - Can pass in `require('mongoose').Types.ObjectId ` or `require('mongodb').ObjectId` or functions.
 ```javascript
 let objectId = require('mongoose').Types.ObjectId;
@@ -273,7 +273,7 @@ let objectId = seededHashids.getObjectId();
 2. Encoding of negative numbers are **not** supported.
 3. Required to pass in the **correct type** of parameters in order to prevent invalid hashes by accident.
 4. It is still **possible** for a different seed to decode a hash, but it is really rare if the **recommendations** are followed. 
-4. Do **not** use this library as a security tool and do not encode sensitive data. This is **not** an encryption library.
+4. Do **not** use this library as a security tool and do **not** encode sensitive data. This is **not** an encryption library.
 
 ## License
 
