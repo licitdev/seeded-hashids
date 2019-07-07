@@ -72,7 +72,7 @@ function _encode(useHex, scope, data, seed) {
       throw new Error('Missing data, must be a hex string.');
     }
   } else {
-    if (!data || typeof data !== 'number' || parseInt(data) < 0) {
+    if (data === undefined || typeof data !== 'number' || parseInt(data) < 0) {
       throw new Error('Missing data, must be a positive number.');
     }
   }
