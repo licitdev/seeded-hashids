@@ -48,10 +48,11 @@ function _doShuffleOutput(hashid, seed) { // Can accept undefined if no seed
   for (let x = 0; x < hashid.length; x++) {
     outputHashid += shuffledCharset[_charset.indexOf(hashid[x])]
   }
-  return outputHashid;
+  return _shuffleSeededString(outputHashid, seed);
 }
 
 function _doUnshuffleOutput(hashid, seed) { // Can accept undefined if no seed
+  hashid = _unshuffleSeededString(hashid, seed);
   let shuffledCharset = _getShuffledCharset(seed);
   let outputHashid = '';
   for (let x = 0; x < hashid.length; x++) {
