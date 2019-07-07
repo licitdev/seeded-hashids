@@ -103,7 +103,7 @@ function _encode(useHex, scope, data, seed) {
     throw new Error('Input data too huge, unable to encoded.');
   }
 
-  if (_shuffleOutput) {
+  if (_shuffleOutput && seed !== undefined) {
     return _doShuffleOutput(hashid, seed);
   }
 
@@ -125,7 +125,7 @@ function _decode(useHex, scope, hashid, seed) {
     throw new Error('Invalid seed, must be a string.');
   }
 
-  if (_shuffleOutput) {
+  if (_shuffleOutput && seed !== undefined) {
     hashid = _doUnshuffleOutput(hashid, seed);
   }
 

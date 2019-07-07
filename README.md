@@ -128,8 +128,9 @@ let minOutputLength = 8;
 ```
 
 ##### shuffleOutput `Boolean` *(optional)*
-- This value determines if the output hashid will be shuffled after encoding by Hashids and before decoding by Hashids.
+- This value determines if the output hashid will be shuffled after encoding and before decoding by Hashids.
 - The output is shuffled based on the seed and attempts to prevent decoding using a wrong seed.
+- If no seed is provided, the output hashid will not be shuffled.
 ```javascript
 let shuffleOutput = true;
 ```
@@ -248,7 +249,7 @@ let minOutputLength = seededHashids.getMinOutputLength();
 ```
 ---
 ### **getShuffleOutput ()** : shuffleOutput `Boolean`
-> To check if the output is shuffled.
+> To check if the output will be shuffled if a seed is provided.
 ```javascript
 let shuffleOutput = seededHashids.getShuffleOutput();
 ```
