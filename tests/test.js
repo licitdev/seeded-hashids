@@ -592,40 +592,40 @@ describe('when encoding and decoding with shuffle', () => {
     assert.notDeepEqual(hex, decoded);
   });
 
-  it('should return NaN when .decode with an invalid hash without seed', () => {
-    let hash = 'fakehash';
-    let decoded = seededHashids.decode('user', hash);
+  it('should return NaN when .decode with an invalid hashid without seed', () => {
+    let hashid = 'fakehashid';
+    let decoded = seededHashids.decode('user', hashid);
     assert.deepEqual(NaN, decoded);
   });
 
-  it('should return NaN when .decode with an invalid hash with seed', () => {
-    let hash = 'fakehash';
+  it('should return NaN when .decode with an invalid hashid with seed', () => {
+    let hashid = 'fakehashid';
     let seed = 'someseed';
-    let decoded = seededHashids.decode('user', hash, seed);
+    let decoded = seededHashids.decode('user', hashid, seed);
     assert.deepEqual(NaN, decoded);
   });
 
-  it('should return an empty string when .decodeHex with an invalid hash without seed', () => {
-    let hash = 'fakehash';
-    let decoded = seededHashids.decodeHex('user', hash);
+  it('should return an empty string when .decodeHex with an invalid hashid without seed', () => {
+    let hashid = 'fakehashid';
+    let decoded = seededHashids.decodeHex('user', hashid);
     assert.deepEqual('', decoded);
   });
 
-  it('should return an empty string when .decodeHex with an invalid hash with seed', () => {
-    let hash = 'fakehash';
+  it('should return an empty string when .decodeHex with an invalid hashid with seed', () => {
+    let hashid = 'fakehashid';
     let seed = 'someseed';
-    let decoded = seededHashids.decodeHex('user', hash, seed);
+    let decoded = seededHashids.decodeHex('user', hashid, seed);
     assert.deepEqual('', decoded);
   });
 
-  it('should return null when .decodeObjectId with an invalid hash without seed', () => {
+  it('should return null when .decodeObjectId with an invalid hashid without seed', () => {
     let hex = 'abcdef1234567890';
     let encoded = seededHashids.encodeHex('user', hex);
     let decoded = seededHashids.decodeObjectId('user', encoded);
     assert.deepEqual(null, decoded);
   });
 
-  it('should return null when .decodeObjectId with an invalid hash with seed', () => {
+  it('should return null when .decodeObjectId with an invalid hashid with seed', () => {
     let hex = 'abcdef1234567890';
     let seed = 'someseed';
     let encoded = seededHashids.encodeHex('user', hex, seed);
@@ -719,40 +719,40 @@ describe('when encoding and decoding without shuffle', () => {
     assert.notDeepEqual(hex, decoded);
   });
 
-  it('should return NaN when .decode with an invalid hash without seed', () => {
-    let hash = 'fakehash';
-    let decoded = seededHashids.decode('user', hash);
+  it('should return NaN when .decode with an invalid hashid without seed', () => {
+    let hashid = 'fakehashid';
+    let decoded = seededHashids.decode('user', hashid);
     assert.deepEqual(NaN, decoded);
   });
 
-  it('should return NaN when .decode with an invalid hash with seed', () => {
-    let hash = 'fakehash';
+  it('should return NaN when .decode with an invalid hashid with seed', () => {
+    let hashid = 'fakehashid';
     let seed = 'someseed';
-    let decoded = seededHashids.decode('user', hash, seed);
+    let decoded = seededHashids.decode('user', hashid, seed);
     assert.deepEqual(NaN, decoded);
   });
 
-  it('should return an empty string when .decodeHex with an invalid hash without seed', () => {
-    let hash = 'fakehash';
-    let decoded = seededHashids.decodeHex('user', hash);
+  it('should return an empty string when .decodeHex with an invalid hashid without seed', () => {
+    let hashid = 'fakehashid';
+    let decoded = seededHashids.decodeHex('user', hashid);
     assert.deepEqual('', decoded);
   });
 
-  it('should return an empty string when .decodeHex with an invalid hash with seed', () => {
-    let hash = 'fakehash';
+  it('should return an empty string when .decodeHex with an invalid hashid with seed', () => {
+    let hashid = 'fakehashid';
     let seed = 'someseed';
-    let decoded = seededHashids.decodeHex('user', hash, seed);
+    let decoded = seededHashids.decodeHex('user', hashid, seed);
     assert.deepEqual('', decoded);
   });
 
-  it('should return null when .decodeObjectId with an invalid hash without seed', () => {
+  it('should return null when .decodeObjectId with an invalid hashid without seed', () => {
     let hex = 'abcdef1234567890';
     let encoded = seededHashids.encodeHex('user', hex);
     let decoded = seededHashids.decodeObjectId('user', encoded);
     assert.deepEqual(null, decoded);
   });
 
-  it('should return null when .decodeObjectId with an invalid hash with seed', () => {
+  it('should return null when .decodeObjectId with an invalid hashid with seed', () => {
     let hex = 'abcdef1234567890';
     let seed = 'someseed';
     let encoded = seededHashids.encodeHex('user', hex, seed);

@@ -128,7 +128,7 @@ let minOutputLength = 8;
 ```
 
 ##### shuffleOutput `Boolean` *(optional)*
-- This value determines if the output hash will be shuffled after encoding by Hashids and before decoding by Hashids.
+- This value determines if the output hashid will be shuffled after encoding by Hashids and before decoding by Hashids.
 - The output is shuffled based on the seed and attempts to prevent decoding using a wrong seed.
 ```javascript
 let shuffleOutput = true;
@@ -172,8 +172,8 @@ let userId = seededHashids.encodeHex('user', 'abcd1234', 'unique-seed');
 - This seed is used to generate a hashid that is "unique" for itself.
 
 ---
-### **decode (scope, hash, [seed])** : decodedNumber `Number`
-> To decode hashes into positive numbers. Returns NaN if unable to decode.
+### **decode (scope, hashid, [seed])** : decodedNumber `Number`
+> To decode hashids into positive numbers. Returns NaN if unable to decode.
 ```javascript
 let userId = seededHashids.decode('user', 'vxfR8swj', 'unique-seed');
 ```
@@ -181,14 +181,14 @@ let userId = seededHashids.decode('user', 'vxfR8swj', 'unique-seed');
 #### scope `String`
 - This scope should be the same scope string that was used during initialization.
 
-#### hash `String`
-- This hash to be decoded.
+#### hashid `String`
+- This hashid to be decoded.
 
 #### seed `String` *(optional)*
 - This seed is used to decode a hashid that is "unique" for itself.
 ---
-### **decodeHex (scope, hash, [seed])** : decodedHex `String`
-> To decode hashes into hex strings. Returns an empty string if unable to decode.
+### **decodeHex (scope, hashid, [seed])** : decodedHex `String`
+> To decode hashids into hex strings. Returns an empty string if unable to decode.
 ```javascript
 let userId = seededHashids.decodeHex('user', 'dvdztVza', 'unique-seed');
 ```
@@ -196,14 +196,14 @@ let userId = seededHashids.decodeHex('user', 'dvdztVza', 'unique-seed');
 #### scope `String`
 - This scope should be the same scope string that was used during initialization.
 
-#### hash `String`
-- This hash to be decoded.
+#### hashid `String`
+- This hashid to be decoded.
 
 #### seed `String` *(optional)*
 - This seed is used to decode a hashid that is "unique" for itself.
 ---
-### **decodeObjectId (scope, hash, [seed])** : decodedObjectId `ObjectId`
-> To decode hashes into objectIds. Returns NaN if unable to decode.
+### **decodeObjectId (scope, hashid, [seed])** : decodedObjectId `ObjectId`
+> To decode hashids into objectIds. Returns NaN if unable to decode.
 ```javascript
 let userId = seededHashids.decodeObjectId('user', 'U5FdAz8EvEErzga96Z5z6S', 'unique-seed');
 ```
@@ -211,8 +211,8 @@ let userId = seededHashids.decodeObjectId('user', 'U5FdAz8EvEErzga96Z5z6S', 'uni
 #### scope `String`
 - This scope should be the same scope string that was used during initialization.
 
-#### hash `String`
-- This hash to be decoded.
+#### hashid `String`
+- This hashid to be decoded.
 
 #### seed `String` *(optional)*
 - This seed is used to decode a hashid that is "unique" for itself.
@@ -242,7 +242,7 @@ let charset = seededHashids.getCharset();
 ```
 ---
 ### **getMinOutputLength ()** : minOutputLength `Number`
-> To get the hash length.
+> To get the minimum output hashid length.
 ```javascript
 let minOutputLength = seededHashids.getMinOutputLength();
 ```
@@ -272,8 +272,8 @@ let objectId = seededHashids.getObjectId();
 ## Pitfalls
 1. Encoding of an array of numbers is **not** supported.
 2. Encoding of negative numbers are **not** supported.
-3. Required to pass in the **correct type** of parameters in order to prevent invalid hashes by accident.
-4. It is still **possible** for a different seed to decode a hash, but it is really rare if the **recommendations** are followed. 
+3. Required to pass in the **correct type** of parameters in order to prevent invalid hashids by accident.
+4. It is still **possible** for a different seed to decode a hashid, but it is really rare if the **recommendations** are followed. 
 4. Do **not** use this library as a security tool and do **not** encode sensitive data. This is **not** an encryption library.
 
 ## License

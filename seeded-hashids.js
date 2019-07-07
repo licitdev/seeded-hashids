@@ -42,22 +42,22 @@ function _getShuffledCharset(seed) {
   return _shuffleSeededString(_charset, seed);
 }
 
-function _doShuffleOutput(hash, seed) { // Can accept undefined if no seed
+function _doShuffleOutput(hashid, seed) { // Can accept undefined if no seed
   let shuffledCharset = _getShuffledCharset(seed);
-  let outputHash = '';
-  for (let x = 0; x < hash.length; x++) {
-    outputHash += shuffledCharset[_charset.indexOf(hash[x])]
+  let outputHashid = '';
+  for (let x = 0; x < hashid.length; x++) {
+    outputHashid += shuffledCharset[_charset.indexOf(hashid[x])]
   }
-  return outputHash;
+  return outputHashid;
 }
 
-function _doUnshuffleOutput(hash, seed) { // Can accept undefined if no seed
+function _doUnshuffleOutput(hashid, seed) { // Can accept undefined if no seed
   let shuffledCharset = _getShuffledCharset(seed);
-  let outputHash = '';
-  for (let x = 0; x < hash.length; x++) {
-    outputHash += _charset[shuffledCharset.indexOf(hash[x])]
+  let outputHashid = '';
+  for (let x = 0; x < hashid.length; x++) {
+    outputHashid += _charset[shuffledCharset.indexOf(hashid[x])]
   }
-  return outputHash;
+  return outputHashid;
 }
 
 function _encode(useHex, scope, data, seed) {
@@ -88,36 +88,36 @@ function _encode(useHex, scope, data, seed) {
     data = _shuffleSeededString(data, scope + seed);
   }
 
-  let hash;
+  let hashid;
 
   if (useHex) {
-    // Hex based hash
-    hash = selectedHasher.encodeHex(data);
+    // Hex based hashid
+    hashid = selectedHasher.encodeHex(data);
   } else {
-    // Count based hash
-    hash = selectedHasher.encode(data);
+    // Count based hashid
+    hashid = selectedHasher.encode(data);
   }
 
-  if (!hash) { // Crossed Hashids limit of hashes that can be generated with charset
+  if (!hashid) { // Crossed Hashids limit of hashids that can be generated with charset
     throw new Error('Input data too huge, unable to encoded.');
   }
 
   if (_shuffleOutput) {
-    return _doShuffleOutput(hash, seed);
+    return _doShuffleOutput(hashid, seed);
   }
 
-  return hash;
+  return hashid;
 }
 
-function _decode(useHex, scope, hash, seed) {
+function _decode(useHex, scope, hashid, seed) {
   let selectedHasher = _scopes[scope];
 
   if (!selectedHasher) {
     throw new Error('Missing scope.');
   }
 
-  if (!hash || typeof hash !== 'string') {
-    throw new Error('Missing hash, must be a string.');
+  if (!hashid || typeof hashid !== 'string') {
+    throw new Error('Missing hashid, must be a string.');
   }
 
   if (seed !== undefined && typeof seed !== 'string') {
@@ -125,20 +125,20 @@ function _decode(useHex, scope, hash, seed) {
   }
 
   if (_shuffleOutput) {
-    hash = _doUnshuffleOutput(hash, seed);
+    hashid = _doUnshuffleOutput(hashid, seed);
   }
 
   let data;
 
   if (useHex) {
-    // Hex based hash
-    data = selectedHasher.decodeHex(hash);
+    // Hex based hashid
+    data = selectedHasher.decodeHex(hashid);
     if (typeof data !== 'string') {
       data = '';
     }
   } else {
-    // Count based hash
-    data = selectedHasher.decode(hash);
+    // Count based hashid
+    data = selectedHasher.decode(hashid);
     if (data instanceof Array && data.length > 0) {
       data = data[0] + '';
     } else {
@@ -146,7 +146,7 @@ function _decode(useHex, scope, hash, seed) {
     }
   }
 
-  // Must have seed and decoded hash cannot be empty string
+  // Must have seed and decoded hashid cannot be empty string
   if (seed !== undefined && data) {
     data = _unshuffleSeededString(data, scope + seed);
   }
@@ -207,19 +207,19 @@ module.exports = {
     return _encode(true, scope, hex, seed);
   },
 
-  decode: function(scope, hash, seed) {
+  decode: function(scope, hashid, seed) {
     _requireInitialized();
 
-    return _decode(false, scope, hash, seed);
+    return _decode(false, scope, hashid, seed);
   },
 
-  decodeHex: function(scope, hash, seed) {
+  decodeHex: function(scope, hashid, seed) {
     _requireInitialized();
 
-    return _decode(true, scope, hash, seed);
+    return _decode(true, scope, hashid, seed);
   },
 
-  decodeObjectId: function(scope, hash, seed) {
+  decodeObjectId: function(scope, hashid, seed) {
     _requireInitialized();
 
     if (!_objectId) {
@@ -227,7 +227,7 @@ module.exports = {
     }
 
     // Do decode as per hex
-    let data = _decode(true, scope, hash, seed);
+    let data = _decode(true, scope, hashid, seed);
 
     // Cast to ObjectId if is 24 character hex string
     if (data && data.length === 24) {
