@@ -22,7 +22,7 @@ Application A sees User B as 'zxcqwe' and sees User C as 'bnmrty'
 Application B sees User A as 'qweasd' and sees User C as 'rtyjkl'
 Application C sees User A as 'fghzxc' and sees User B as 'asdiop'
 
-'asdiop' which is supposedly only visible to Application C.
+'asdiop' is supposedly only visible to Application C.
 If Application A decodes 'asdiop', it will be (ID 654) which is not the same user.
 ```
 
@@ -58,7 +58,7 @@ decoded = seededHashids.decodeHex('user', encoded, 'unique-seed');
 console.log(encoded); // 'MVVEdMKq'
 console.log(decoded); // 'abcd1234'
 
-// If a wrong salt is used to decode, a different output will be  
+// If a wrong seed is used to decode, a different output will be  
 decoded = seededHashids.decodeHex('user', encoded, 'wrong-seed');
 console.log(decoded); // 'cabd2341' (Different)
 
