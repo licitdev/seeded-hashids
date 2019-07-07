@@ -277,7 +277,7 @@ let objectId = seededHashids.getObjectId();
 
 MIT License. See the [LICENSE](LICENSE) file.
 
-[travis-url]: https://travis-ci.com/licitdev/seeded-hashids.js
+[travis-url]: https://travis-ci.com/licitdev/seeded-hashids
 [travis-image]: https://travis-ci.com/licitdev/seeded-hashids.svg
 
 [coveralls-url]: https://coveralls.io/github/licitdev/seeded-hashids
