@@ -99,7 +99,7 @@ describe('when initializing', () => {
           salt: 'salt'
         }, {
           scope: 123,
-          salt: 'salt'
+          salt: 'salt2'
         }]
       });
     });
@@ -124,6 +124,20 @@ describe('when initializing', () => {
           salt: 'salt'
         }, {
           scope: 'test',
+          salt: 'salts'
+        }]
+      });
+    });
+  });
+  
+  it('should throw an error if there are duplicated salts', () => {
+    assert.throws(() => {
+      seededHashids.initialize({
+        scopes: [{
+          scope: 'test',
+          salt: 'salt'
+        }, {
+          scope: 'test2',
           salt: 'salt'
         }]
       });

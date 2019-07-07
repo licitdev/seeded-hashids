@@ -299,6 +299,7 @@ module.exports = {
     }
 
     let scopes = {};
+    let salts = [];
     for (let i = 0; i < options.scopes.length; i++) {
       if (!options.scopes[i].scope ||
         typeof options.scopes[i].scope !== 'string' ||
@@ -309,7 +310,11 @@ module.exports = {
       if (scopes[options.scopes[i].scope]) {
         throw new Error('Scope exists. Please ensure that scopes are unique.');
       }
-
+      if (salts.indexOf(options.scopes[i].salt) !== -1) {
+        throw new Error('Salt exists. Please ensure that salts are unique.');
+      }
+      
+      salts.push(options.scopes[i].salt);
       scopes[options.scopes[i].scope] = _createHasher(options.scopes[i].salt);
     }
 

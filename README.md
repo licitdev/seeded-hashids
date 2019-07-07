@@ -105,6 +105,8 @@ objectId | no | `ObjectId` | -
 ##### scopes `Array`
 - The array is a list of scope object that contains a scope string and a salt string.
 - Each scope could be then name of a class or an object type.
+- Scopes have to be unique.
+- Salts have to be unique.
 ```javascript
 let scope = [
 	{scope: 'user', salt: 'some-salt'},
