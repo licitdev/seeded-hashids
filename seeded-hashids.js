@@ -42,6 +42,24 @@ function _getShuffledCharset(seed) {
 	return _shuffleSeededString(_charset, seed);
 }
 
+function _doShuffleOutput(hash, seed) { // Can accept undefined if no seed
+  let shuffledCharset = _getShuffledCharset(seed);
+  let outputHash = '';
+  for(let x = 0; x < hash.length; x++){
+    outputHash += shuffledCharset[_charset.indexOf(hash[x])]
+  }
+  return outputHash;
+}
+
+function _doUnshuffleOutput(hash, seed) { // Can accept undefined if no seed
+  let shuffledCharset = _getShuffledCharset(seed);
+  let outputHash = '';
+  for(let x = 0; x < hash.length; x++){
+    outputHash += _charset[shuffledCharset.indexOf(hash[x])]
+  }
+  return outputHash;
+}
+
 function _encode(useHex, scope, data, seed) {
 	let selectedHasher = _scopes[scope];
 
@@ -87,7 +105,7 @@ function _encode(useHex, scope, data, seed) {
   }
   
   if(_shuffleOutput){
-    return _shuffleSeededString(hash, selectedHasher.alphabet);
+    return _doShuffleOutput(hash, seed);
   }
 
   return hash;
@@ -109,7 +127,7 @@ function _decode(useHex, scope, hash, seed) {
 	}
   
   if(_shuffleOutput){
-    hash = _unshuffleSeededString(hash, selectedHasher.alphabet);
+    hash = _doUnshuffleOutput(hash, seed);
   }
   
 	let data;

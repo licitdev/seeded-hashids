@@ -513,7 +513,6 @@ describe('when encoding and decoding with shuffle', () => {
     let wrongSeed = 'wrongseed';
     let encoded = seededHashids.encodeHex('user', hex, seed);
     let decoded = seededHashids.decodeObjectId('user', encoded, wrongSeed);
-    decoded = decoded.toString()
     assert.notDeepEqual(hex, decoded);
 	});
   
