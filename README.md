@@ -278,14 +278,14 @@ let objectId = seededHashids.getObjectId();
 MIT License. See the [LICENSE](LICENSE) file.
 
 [travis-url]: https://travis-ci.com/licitdev/seeded-hashids
-[travis-image]: https://travis-ci.com/licitdev/seeded-hashids.svg
+[travis-image]: https://img.shields.io/travis/com/licitdev/seeded-hashids.svg?style=flat-square
 
 [coveralls-url]: https://coveralls.io/github/licitdev/seeded-hashids
-[coveralls-image]: https://coveralls.io/repos/github/licitdev/seeded-hashids/badge.svg
+[coveralls-image]: https://img.shields.io/coveralls/github/licitdev/seeded-hashids.svg?style=flat-square
 
 [npm-downloads-image]: https://img.shields.io/npm/dm/seeded-hashids.svg?style=flat-square
-[npm-version-image]: https://img.shields.io/npm/v/seeded-hashids.svg
+[npm-version-image]: https://img.shields.io/npm/v/seeded-hashids.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/seeded-hashids
 
 [license-url]: https://github.com/licitdev/seeded-hashids/blob/master/LICENSE
-[license-image]: https://img.shields.io/packagist/l/hashids/hashids.svg?style=flat
+[license-image]: https://img.shields.io/npm/l/seeded-hashids.svg?style=flat-square
