@@ -60,14 +60,14 @@ function _encode(useHex, scope, data, seed) {
     }
   }
   
-  if (seed && typeof seed !== 'string') {
+  if (seed !== undefined && typeof seed !== 'string') {
     throw new Error('Invalid seed, must be a string.');
 	}
 
 	data = data.toString(); // Convert to string so it could be shuffled
 
 	// Must have seed and data cannot be empty string
-	if (seed && data) {
+	if (seed !== undefined && data) {
 		data = _shuffleSeededString(data, scope + seed);
 	}
 
@@ -104,7 +104,7 @@ function _decode(useHex, scope, hash, seed) {
     throw new Error('Missing hash, must be a string.');
 	}
   
-  if (seed && typeof seed !== 'string') {
+  if (seed !== undefined && typeof seed !== 'string') {
     throw new Error('Invalid seed, must be a string.');
 	}
   
@@ -133,7 +133,7 @@ function _decode(useHex, scope, hash, seed) {
 	}
 
 	// Must have seed and decoded hash cannot be empty string
-	if (seed && data) {
+	if (seed !== undefined && data) {
 		data = _unshuffleSeededString(data, scope + seed);
 	}
   

@@ -7,7 +7,7 @@ Generate seeded Hashids that is unique per scope.
 [![NPM version][npm-version-image]][npm-url]
 [![License][license-image]][license-url]
 
-**Seeded-Hashids** is an easy to use library to generate seeded [Hashids](http://hashids.org/javascript) which is unique to a seed based on a user or group. Hide the raw userids or objectids from end users.
+**Seeded-Hashids** is an easy to use library to generate seeded [Hashids](http://hashids.org/javascript) which is unique to a seed based on a user or group. Hide the raw userids, hex strings or objectids from end users.
 
 An example is to generate Hashids that are unique to a particular application. Even if multiple applications shared their userids with each other, the users could not be correlated or identified by their userids.
 
