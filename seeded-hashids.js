@@ -1,4 +1,3 @@
-const ShuffleSeed = require('shuffle-seed');
 const HashIds = require('hashids');
 
 const HexPattern = /^[a-fA-F0-9]+$/;
@@ -31,18 +30,60 @@ function _createHasher(salt) {
 }
 
 function _shuffleSeededString(str, seed) {
-  return ShuffleSeed.shuffle(str.split(''), seed).join('');
+  return _shuffleSeededArray(str.split(''), seed).join('');
 }
 
 function _unshuffleSeededString(str, seed) {
-  return ShuffleSeed.unshuffle(str.split(''), seed).join('');
+  return _unshuffleSeededArray(str.split(''), seed).join('');
 }
 
 function _getShuffledCharset(seed) {
   return _shuffleSeededString(_charset, seed);
 }
 
-function _doShuffleOutput(hashid, seed) { // Can accept undefined if no seed
+function _shuffleSeededArray(array, seed) { // Always required to have a seed
+  seed = _seedFromString(seed);
+  let currentIndex = array.length, randomIndex, temp;
+  let random = function() {
+    var x = Math.sin(++seed) * 10000;
+    return x - Math.floor(x);
+  };
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(random() * currentIndex);
+    currentIndex -= 1;
+    temp = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temp;
+  }
+  return array;
+}
+
+function _unshuffleSeededArray(array, seed) { // Always required to have a seed
+  seed = _seedFromString(seed);
+  let currentIndex = 0, maxIndex = array.length, randomIndex, temp;
+  seed += array.length + 1
+  let random = function() {
+    var x = Math.sin(--seed) * 10000;
+    return x - Math.floor(x);
+  };
+  while (currentIndex !== maxIndex) {
+    randomIndex = Math.floor(random() * (currentIndex + 1));
+    temp = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temp;
+    currentIndex += 1;
+  }
+  return array;
+}
+
+function _seedFromString(s) {
+ return s.split("").reduce(function(a, b) {
+  a = ((a << 5) - a) + b.charCodeAt(0);
+  return a & a
+ }, 0);
+}
+
+function _doShuffleOutput(hashid, seed) { // Always required to have a seed
   let shuffledCharset = _getShuffledCharset(seed);
   let outputHashid = '';
   for (let x = 0; x < hashid.length; x++) {
@@ -51,7 +92,7 @@ function _doShuffleOutput(hashid, seed) { // Can accept undefined if no seed
   return _shuffleSeededString(outputHashid, seed);
 }
 
-function _doUnshuffleOutput(hashid, seed) { // Can accept undefined if no seed
+function _doUnshuffleOutput(hashid, seed) { // Always required to have a seed
   hashid = _unshuffleSeededString(hashid, seed);
   let shuffledCharset = _getShuffledCharset(seed);
   let outputHashid = '';
