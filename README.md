@@ -132,9 +132,9 @@ let minOutputLength = 8;
 ```
 
 ##### shuffleOutput `Boolean` *(optional)*
-- This value determines if the output hashid will be shuffled after encoding and before decoding by Hashids.
+- This value determines if the output seeded-hashid will be shuffled after encoding and before decoding by Hashids.
 - The output is shuffled based on the seed and attempts to prevent decoding using a wrong seed.
-- If no seed is provided, the output hashid will not be shuffled.
+- If no seed is provided, the output seeded-hashid will not be shuffled.
 ```javascript
 let shuffleOutput = true;
 ```
@@ -164,7 +164,7 @@ let unshuffleFunction = function(inputString, seedString){
 };
 ```
 ---
-### **encode (scope, number, [seed])** : Hashid `String`
+### **encode (scope, number, [seed])** : seededHashid `String`
 > To encode positive numbers.
 ```javascript
 let userId = seededHashids.encode('user', 12345678);
@@ -177,9 +177,10 @@ let userId = seededHashids.encode('user', 12345678);
 - This number to be encoded.
 
 #### seed `String` *(optional)*
-- This seed is used to generate a hashid that is "unique" for itself.
+- This seed is used to encode a seeded-hashid that is unique to the seed.
+
 ---
-### **encodeHex (scope, hex, [seed])** : Hashid `String`
+### **encodeHex (scope, hex, [seed])** : seededHashid `String`
 > To encode hex strings.
 ```javascript
 let userId = seededHashids.encodeHex('user', 'abcd1234', 'unique-seed');
@@ -192,11 +193,11 @@ let userId = seededHashids.encodeHex('user', 'abcd1234', 'unique-seed');
 - This hex string to be encoded.
 
 #### seed `String` *(optional)*
-- This seed is used to generate a hashid that is "unique" for itself.
+- This seed is used to encode a seeded-hashid that is unique to the seed.
 
 ---
-### **decode (scope, hashid, [seed])** : decodedNumber `Number`
-> To decode hashids into positive numbers. Returns NaN if unable to decode.
+### **decode (scope, seededHashid, [seed])** : decodedNumber `Number`
+> To decode seeded-hashid into a positive number. Returns NaN if unable to decode.
 ```javascript
 let userId = seededHashids.decode('user', 'vxfR8swj', 'unique-seed');
 ```
@@ -204,14 +205,14 @@ let userId = seededHashids.decode('user', 'vxfR8swj', 'unique-seed');
 #### scope `String`
 - This scope should be the same scope string that was used during initialization.
 
-#### hashid `String`
-- This hashid to be decoded.
+#### seededHashid `String`
+- This seeded-hashid to be decoded.
 
 #### seed `String` *(optional)*
-- This seed is used to decode a hashid that is "unique" for itself.
+- This seed is used to decode a seeded-hashid that is unique to the seed.
 ---
-### **decodeHex (scope, hashid, [seed])** : decodedHex `String`
-> To decode hashids into hex strings. Returns an empty string if unable to decode.
+### **decodeHex (scope, seededHashid, [seed])** : decodedHex `String`
+> To decode seeded-hashid into a hex string. Returns an empty string if unable to decode.
 ```javascript
 let userId = seededHashids.decodeHex('user', 'dvdztVza', 'unique-seed');
 ```
@@ -219,14 +220,14 @@ let userId = seededHashids.decodeHex('user', 'dvdztVza', 'unique-seed');
 #### scope `String`
 - This scope should be the same scope string that was used during initialization.
 
-#### hashid `String`
-- This hashid to be decoded.
+#### seededHashid `String`
+- This seeded-hashid to be decoded.
 
 #### seed `String` *(optional)*
-- This seed is used to decode a hashid that is "unique" for itself.
+- This seed is used to decode a seeded-hashid that is unique to the seed.
 ---
-### **decodeObjectId (scope, hashid, [seed])** : decodedObjectId `ObjectId`
-> To decode hashids into objectIds. Returns NaN if unable to decode.
+### **decodeObjectId (scope, seededHashid, [seed])** : decodedObjectId `ObjectId`
+> To decode seeded-hashid into an objectId. Returns NaN if unable to decode.
 ```javascript
 let userId = seededHashids.decodeObjectId('user', 'U5FdAz8EvEErzga96Z5z6S', 'unique-seed');
 ```
@@ -234,11 +235,11 @@ let userId = seededHashids.decodeObjectId('user', 'U5FdAz8EvEErzga96Z5z6S', 'uni
 #### scope `String`
 - This scope should be the same scope string that was used during initialization.
 
-#### hashid `String`
-- This hashid to be decoded.
+#### seededHashid `String`
+- This seeded-hashid to be decoded.
 
 #### seed `String` *(optional)*
-- This seed is used to decode a hashid that is "unique" for itself.
+- This seed is used to decode a seeded-hashid that is unique to the seed.
 ---
 ### **reset ()** : noResult `undefined`
 > To reset seededHashids, needs to initialize() again before usage.
@@ -265,7 +266,7 @@ let charset = seededHashids.getCharset();
 ```
 ---
 ### **getMinOutputLength ()** : minOutputLength `Number`
-> To get the minimum output hashid length.
+> To get the minimum output seeded-hashid length.
 ```javascript
 let minOutputLength = seededHashids.getMinOutputLength();
 ```
@@ -307,9 +308,9 @@ let unshuffleFunction = seededHashids.getUnshuffleFunction();
 ## Pitfalls
 1. Encoding of an array of numbers is **not** supported.
 2. Encoding of negative numbers are **not** supported.
-3. Required to pass in the **correct type** of parameters in order to prevent invalid hashids by accident, such as encoding "[object Object]".
-4. It could still be **possible** for a different seed to decode a hashid, but it is really rare if the **recommendations** are followed.
-5. Upgrade to a major version **after testing** as the output hashids may have changed.
+3. Required to pass in the **correct type** of parameters in order to prevent the encoding of invalid seeded-hashids by accident, such as encoding `"[object Object]"`.
+4. It could still be **possible** for a different seed to decode a seeded-hashid, but it is really rare if the **recommendations** are followed.
+5. Upgrade to a major version **after testing** as the output seeded-hashids may have changed.
 6. Do **not** use this library as a security tool and do **not** encode sensitive data. This is **not** an encryption library.
 
 ## License
