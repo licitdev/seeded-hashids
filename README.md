@@ -14,6 +14,7 @@ Works well with databases that has numeric keys or hex strings. Your database wi
 An example is to generate Hashids that are unique to a particular application. Even if multiple applications shared their userids with each other, the users could not be correlated or identified by their userids.
 
 ## Sample Scenario
+
 ```
 Encoding the userids and using their actual userid as a seed.
 The userids are unique and never revealed to end users.
@@ -81,16 +82,18 @@ console.log(decoded); // 12345678
 ## API
 
 ### **initialize (options)** : noResult `undefined`
+
 > To set up the required scopes and other parameters.
+
 ```javascript
 seededHashids.initialize({
-    scopes: scopes,
-    charset: charset,
-    minOutputLength: minOutputLength,
-    shuffleOutput: shuffleOutput,
-    objectId: objectId,
-    shuffleFunction: shuffleFunction,
-    unshuffleFunction: unshuffleFunction
+  scopes: scopes,
+  charset: charset,
+  minOutputLength: minOutputLength,
+  shuffleOutput: shuffleOutput,
+  objectId: objectId,
+  shuffleFunction: shuffleFunction,
+  unshuffleFunction: unshuffleFunction
 });
 ```
 
@@ -107,195 +110,265 @@ shuffleFunction | no | `Function` | Built-in shuffle function
 unshuffleFunction | no | `Function` | Built-in unshuffle function
 
 ##### scopes `Array`
+
 - The array is a list of scope object that contains a scope string and a salt string.
 - Each scope could be then name of a class or an object type.
 - Scopes have to be unique.
 - Salts have to be unique.
+
 ```javascript
 let scope = [
-    {scope: 'user', salt: 'some-salt'},
-    {scope: 'profile', salt: 'another-salt'}
+  {scope: 'user', salt: 'some-salt'},
+  {scope: 'profile', salt: 'another-salt'}
 ];
 ```
 
 ##### charset `String` *(optional)*
+
 - This value is passed directly to Hashids.
 - A minimum of 16 unique characters are required.
+
 ```javascript
 let charset = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 ```
 
 ##### minOutputLength `Number` *(optional)*
+
 - This value is passed directly to Hashids, which adds padding to reach the length required.
+
 ```javascript
 let minOutputLength = 8;
 ```
 
 ##### shuffleOutput `Boolean` *(optional)*
+
 - This value determines if the output seeded-hashid will be shuffled after encoding and before decoding by Hashids.
 - The output is shuffled based on the seed and attempts to prevent decoding using a wrong seed.
 - If no seed is provided, the output seeded-hashid will not be shuffled.
+
 ```javascript
 let shuffleOutput = true;
 ```
 
 ##### objectId `Function` *(optional)*
+
 - This object is required only if there is a need to cast the decoding output to an ObjectId using `.decodeObjectId`.
 - Can pass in `require('mongoose').Types.ObjectId ` or `require('mongodb').ObjectId` or functions.
+
 ```javascript
 let objectId = require('mongoose').Types.ObjectId;
 ```
 
 ##### shuffleFunction `Function` *(optional)*
+
 - Change the shuffle function used.
 - The shuffle function needs to accept (inputString, seedString) and returns an outputString.
+
 ```javascript
 let shuffleFunction = function(inputString, seedString){
-	return require('shuffle-seed').shuffle(inputString.split(''), seedString).join('');
+  return require('shuffle-seed').shuffle(inputString.split(''), seedString).join('');
 };
 ```
 
 ##### unshuffleFunction `Function` *(optional)*
+
 - Change the unshuffle function used.
 - The unshuffle function needs to accept (inputString, seedString) and returns an outputString.
+
 ```javascript
 let unshuffleFunction = function(inputString, seedString){
-	return require('shuffle-seed').unshuffle(inputString.split(''), seedString).join('');
+  return require('shuffle-seed').unshuffle(inputString.split(''), seedString).join('');
 };
 ```
+
 ---
 ### **encode (scope, number, [seed])** : seededHashid `String`
+
 > To encode positive numbers.
+
 ```javascript
 let userId = seededHashids.encode('user', 12345678);
 ```
 
 #### scope `String`
+
 - This scope should be the same scope string that was used during initialization.
 
 #### number `String`
+
 - This number to be encoded.
 
 #### seed `String` *(optional)*
+
 - This seed is used to encode a seeded-hashid that is unique to the seed.
 
 ---
 ### **encodeHex (scope, hex, [seed])** : seededHashid `String`
+
 > To encode hex strings.
+
 ```javascript
 let userId = seededHashids.encodeHex('user', 'abcd1234', 'unique-seed');
 ```
 
 #### scope `String`
+
 - This scope should be the same scope string that was used during initialization.
 
 #### hex `String`
+
 - This hex string to be encoded.
 
 #### seed `String` *(optional)*
+
 - This seed is used to encode a seeded-hashid that is unique to the seed.
 
 ---
 ### **decode (scope, seededHashid, [seed])** : decodedNumber `Number`
+
 > To decode seeded-hashid into a positive number. Returns NaN if unable to decode.
+
 ```javascript
 let userId = seededHashids.decode('user', 'nY9AyaDn', 'unique-seed');
 ```
 
 #### scope `String`
+
 - This scope should be the same scope string that was used during initialization.
 
 #### seededHashid `String`
+
 - This seeded-hashid to be decoded.
 
 #### seed `String` *(optional)*
+
 - This seed is used to decode a seeded-hashid that is unique to the seed.
+
 ---
 ### **decodeHex (scope, seededHashid, [seed])** : decodedHex `String`
+
 > To decode seeded-hashid into a hex string. Returns an empty string if unable to decode.
+
 ```javascript
 let userId = seededHashids.decodeHex('user', 'S4RTRZ2L', 'unique-seed');
 ```
 
 #### scope `String`
+
 - This scope should be the same scope string that was used during initialization.
 
 #### seededHashid `String`
+
 - This seeded-hashid to be decoded.
 
 #### seed `String` *(optional)*
+
 - This seed is used to decode a seeded-hashid that is unique to the seed.
+
 ---
 ### **decodeObjectId (scope, seededHashid, [seed])** : decodedObjectId `ObjectId`
+
 > To decode seeded-hashid into an objectId. Returns NaN if unable to decode.
+
 ```javascript
 let userId = seededHashids.decodeObjectId('user', 'QX3Bu2pNSTnPEZFg6sW5EY', 'unique-seed');
 ```
 
 #### scope `String`
+
 - This scope should be the same scope string that was used during initialization.
 
 #### seededHashid `String`
+
 - This seeded-hashid to be decoded.
 
 #### seed `String` *(optional)*
+
 - This seed is used to decode a seeded-hashid that is unique to the seed.
+
 ---
 ### **reset ()** : noResult `undefined`
+
 > To reset seededHashids, needs to initialize() again before usage.
+
 ```javascript
 seededHashids.reset();
 ```
+
 ---
 ### **isInitialized ()** : isInitialized `Boolean`
+
 > To check if seededHashids is initialized.
+
 ```javascript
 let isInitialized = seededHashids.isInitialized();
 ```
+
 ---
 ### **getScopes ()** : scopes `Array`
+
 > To get the string array of scopes.
+
 ```javascript
 let scopes = seededHashids.getScopes();
 ```
+
 ---
 ### **getCharset ()** : charset `String`
+
 > To get the charset string.
+
 ```javascript
 let charset = seededHashids.getCharset();
 ```
+
 ---
 ### **getMinOutputLength ()** : minOutputLength `Number`
+
 > To get the minimum output seeded-hashid length.
+
 ```javascript
 let minOutputLength = seededHashids.getMinOutputLength();
 ```
+
 ---
 ### **getShuffleOutput ()** : shuffleOutput `Boolean`
+
 > To check if the output will be shuffled if a seed is provided.
+
 ```javascript
 let shuffleOutput = seededHashids.getShuffleOutput();
 ```
+
 ---
 ### **getObjectId ()** : objectId `Function`
+
 > To get the objectId function to see if available.
+
 ```javascript
 let objectId = seededHashids.getObjectId();
 ```
+
 ---
 ### **getShuffleFunction ()** : shuffleFunction `Function`
+
 > To get the shuffle function used.
+
 ```javascript
 let shuffleFunction = seededHashids.getShuffleFunction();
 ```
+
 ---
 ### **getUnshuffleFunction ()** : unshuffleFunction `Function`
+
 > To get the unshuffle function used.
+
 ```javascript
 let unshuffleFunction = seededHashids.getUnshuffleFunction();
 ```
 
 ## Recommendations
+
 1. Charset should **not** be too short.
 2. Salts should **not** be too short.
 3. Seeds should **not** be too short. Recommended to use **long** hex strings such as ObjectIds or UUIDs.
@@ -306,6 +379,7 @@ let unshuffleFunction = seededHashids.getUnshuffleFunction();
 8. Encode and decode as required, recommended for database to contain only **original** ids or hex strings.
 
 ## Pitfalls
+
 1. Encoding of an array of numbers is **not** supported.
 2. Encoding of negative numbers are **not** supported.
 3. Required to pass in the **correct type** of parameters in order to prevent the encoding of invalid seeded-hashids by accident, such as encoding `"[object Object]"`.
