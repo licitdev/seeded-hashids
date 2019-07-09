@@ -52,13 +52,13 @@ let encoded, decoded;
 // Encoding hex strings
 encoded = seededHashids.encodeHex('user', 'abcd1234');
 decoded = seededHashids.decodeHex('user', encoded);
-console.log(encoded); // 'rdksH67E'
+console.log(encoded); // 'bNVA3Q9g'
 console.log(decoded); // 'abcd1234'
 
 // Encoding hex strings with seed
 encoded = seededHashids.encodeHex('user', 'abcd1234', 'unique-seed');
 decoded = seededHashids.decodeHex('user', encoded, 'unique-seed');
-console.log(encoded); // 'dvdztVza'
+console.log(encoded); // 'S4RTRZ2L'
 console.log(decoded); // 'abcd1234'
 
 // If a wrong seed is used to decode, will decode to a different output
@@ -68,13 +68,13 @@ console.log(decoded); // '' (Empty string)
 // Decoding ObjectIds, same as hex but needs to be 24 characters hex string
 encoded = seededHashids.encodeHex('user', 'abcd1234abcd1234abcd1234', 'unique-seed');
 decoded = seededHashids.decodeObjectId('user', encoded, 'unique-seed');
-console.log(encoded); // 'U5FdAz8EvEErzga96Z5z6S'
+console.log(encoded); // 'QX3Bu2pNSTnPEZFg6sW5EY'
 console.log(decoded); // ObjectId('abcd1234abcd1234abcd1234')
 
 // Encoding positive integers
 encoded = seededHashids.encode('user', 12345678);
 decoded = seededHashids.decode('user', encoded);
-console.log(encoded); // 'vxfR8swj'
+console.log(encoded); // 'nY9AyaDn'
 console.log(decoded); // 12345678
 ```
 
@@ -114,7 +114,7 @@ unshuffleFunction | no | `Function` | Built-in unshuffle function
 ```javascript
 let scope = [
     {scope: 'user', salt: 'some-salt'},
-    {scope: 'profile', salt: 'another-salt'},
+    {scope: 'profile', salt: 'another-salt'}
 ];
 ```
 
@@ -199,7 +199,7 @@ let userId = seededHashids.encodeHex('user', 'abcd1234', 'unique-seed');
 ### **decode (scope, seededHashid, [seed])** : decodedNumber `Number`
 > To decode seeded-hashid into a positive number. Returns NaN if unable to decode.
 ```javascript
-let userId = seededHashids.decode('user', 'vxfR8swj', 'unique-seed');
+let userId = seededHashids.decode('user', 'nY9AyaDn', 'unique-seed');
 ```
 
 #### scope `String`
@@ -214,7 +214,7 @@ let userId = seededHashids.decode('user', 'vxfR8swj', 'unique-seed');
 ### **decodeHex (scope, seededHashid, [seed])** : decodedHex `String`
 > To decode seeded-hashid into a hex string. Returns an empty string if unable to decode.
 ```javascript
-let userId = seededHashids.decodeHex('user', 'dvdztVza', 'unique-seed');
+let userId = seededHashids.decodeHex('user', 'S4RTRZ2L', 'unique-seed');
 ```
 
 #### scope `String`
@@ -229,7 +229,7 @@ let userId = seededHashids.decodeHex('user', 'dvdztVza', 'unique-seed');
 ### **decodeObjectId (scope, seededHashid, [seed])** : decodedObjectId `ObjectId`
 > To decode seeded-hashid into an objectId. Returns NaN if unable to decode.
 ```javascript
-let userId = seededHashids.decodeObjectId('user', 'U5FdAz8EvEErzga96Z5z6S', 'unique-seed');
+let userId = seededHashids.decodeObjectId('user', 'QX3Bu2pNSTnPEZFg6sW5EY', 'unique-seed');
 ```
 
 #### scope `String`
