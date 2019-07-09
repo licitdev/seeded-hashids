@@ -123,7 +123,7 @@ describe('when initializing', () => {
       });
     });
   });
-  
+
   it('should throw an error if there are duplicated salts', () => {
     assert.throws(() => {
       seededHashids.initialize({
@@ -235,6 +235,84 @@ describe('when initializing', () => {
     assert.doesNotThrow(() => {
       defaults.objectId = require('mongoose').Types.ObjectId;
       seededHashids.initialize(defaults);
+    });
+  });
+
+  it('should throw an error if invalid shuffleFunction is passed', () => {
+    assert.throws(() => {
+      seededHashids.initialize({
+        scopes: defaults.scopes,
+        shuffleFunction: ''
+      });
+    });
+    assert.throws(() => {
+      seededHashids.initialize({
+        scopes: defaults.scopes,
+        shuffleFunction: {}
+      });
+    });
+    assert.throws(() => {
+      seededHashids.initialize({
+        scopes: defaults.scopes,
+        shuffleFunction: function() {
+          return null;
+        }
+      });
+    });
+    assert.throws(() => {
+      seededHashids.initialize({
+        scopes: defaults.scopes,
+        shuffleFunction: function() {
+          return 123;
+        }
+      });
+    });
+  });
+
+  it('should throw an error if invalid unshuffleFunction is passed', () => {
+    assert.throws(() => {
+      seededHashids.initialize({
+        scopes: defaults.scopes,
+        unshuffleFunction: ''
+      });
+    });
+    assert.throws(() => {
+      seededHashids.initialize({
+        scopes: defaults.scopes,
+        unshuffleFunction: {}
+      });
+    });
+    assert.throws(() => {
+      seededHashids.initialize({
+        scopes: defaults.scopes,
+        unshuffleFunction: function() {
+          return null;
+        }
+      });
+    });
+    assert.throws(() => {
+      seededHashids.initialize({
+        scopes: defaults.scopes,
+        unshuffleFunction: function() {
+          return 123;
+        }
+      });
+    });
+  });
+
+  it('should not throw an error if valid initialization with shuffle-seed', () => {
+    assert.doesNotThrow(() => {
+      let shuffle = function(inputString, seedString) {
+        return require('shuffle-seed').shuffle(inputString.split(''), seedString).join('');
+      };
+      let unshuffle = function(inputString, seedString) {
+        return require('shuffle-seed').unshuffle(inputString.split(''), seedString).join('');
+      };
+      defaults.shuffleFunction = shuffle;
+      defaults.unshuffleFunction = unshuffle;
+      seededHashids.initialize(defaults);
+      delete defaults.shuffleFunction;
+      delete defaults.unshuffleFunction;
     });
   });
 
@@ -507,6 +585,14 @@ describe('when initialized without objectId', () => {
 
   it('should get the same value for .getObjectId', () => {
     assert.equal(null, seededHashids.getObjectId());
+  });
+
+  it('should get a function for .getShuffleFunction', () => {
+    assert.equal('function', typeof seededHashids.getShuffleFunction());
+  });
+
+  it('should get a function for .getUnshuffleFunction', () => {
+    assert.equal('function', typeof seededHashids.getUnshuffleFunction());
   });
 
 });

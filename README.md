@@ -1,13 +1,13 @@
 # Seeded-Hashids
-Generate seeded Hashids that is unique per scope.
+Generate seeded Hashids that is unique per seed.
 
+[![NPM version][npm-version-image]][npm-url]
+[![License][license-image]][license-url]
 [![Build Status][travis-image]][travis-url]
 [![Coveralls Status][coveralls-image]][coveralls-url]
 [![NPM downloads][npm-downloads-image]][npm-url]
-[![NPM version][npm-version-image]][npm-url]
-[![License][license-image]][license-url]
 
-**Seeded-Hashids** is an easy to use library to generate seeded [Hashids](http://hashids.org/javascript) which is unique to a seed based on a user or group. Hide the raw ids, hex strings, objectids or uuids from end users and reduces the number of database calls that check for valid or existing ids.
+**Seeded-Hashids** is an easy to use library to generate seeded [Hashids](http://hashids.org/javascript) which is unique to a seed that can be based on a user or group. Hide the raw ids, hex strings, objectids or uuids from end users and reduces the number of database calls that check for valid or existing ids.
 
 Works well with databases that has numeric keys or hex strings. Your database will contain only the original ids as there is no need to store the encoded versions. UUIDs and MongoDB's ObjectIDs are hex strings.
 
@@ -88,7 +88,9 @@ seededHashids.initialize({
     charset: charset,
     minOutputLength: minOutputLength,
     shuffleOutput: shuffleOutput,
-    objectId: objectId
+    objectId: objectId,
+    shuffleFunction: shuffleFunction,
+    unshuffleFunction: unshuffleFunction
 });
 ```
 
@@ -101,6 +103,8 @@ charset | no | `String` | `a-z, A-Z, 2-9` without `i, I, o, O, 1, 0` to increase
 minOutputLength | no | `Number` |  8
 shuffleOutput | no | `Boolean` | true
 objectId | no | `ObjectId` | -
+shuffleFunction | no | `Function` | Built-in shuffle function
+unshuffleFunction | no | `Function` | Built-in unshuffle function
 
 ##### scopes `Array`
 - The array is a list of scope object that contains a scope string and a salt string.
@@ -140,6 +144,24 @@ let shuffleOutput = true;
 - Can pass in `require('mongoose').Types.ObjectId ` or `require('mongodb').ObjectId` or functions.
 ```javascript
 let objectId = require('mongoose').Types.ObjectId;
+```
+
+##### shuffleFunction `Function` *(optional)*
+- Change the shuffle function used.
+- The shuffle function needs to accept (inputString, seedString) and returns an outputString.
+```javascript
+let shuffleFunction = function(inputString, seedString){
+	return require('shuffle-seed').shuffle(inputString.split(''), seedString).join('');
+};
+```
+
+##### unshuffleFunction `Function` *(optional)*
+- Change the unshuffle function used.
+- The unshuffle function needs to accept (inputString, seedString) and returns an outputString.
+```javascript
+let unshuffleFunction = function(inputString, seedString){
+	return require('shuffle-seed').unshuffle(inputString.split(''), seedString).join('');
+};
 ```
 ---
 ### **encode (scope, number, [seed])** : Hashid `String`
@@ -259,12 +281,24 @@ let shuffleOutput = seededHashids.getShuffleOutput();
 ```javascript
 let objectId = seededHashids.getObjectId();
 ```
+---
+### **getShuffleFunction ()** : shuffleFunction `Function`
+> To get the shuffle function used.
+```javascript
+let shuffleFunction = seededHashids.getShuffleFunction();
+```
+---
+### **getUnshuffleFunction ()** : unshuffleFunction `Function`
+> To get the unshuffle function used.
+```javascript
+let unshuffleFunction = seededHashids.getUnshuffleFunction();
+```
 
 ## Recommendations
 1. Charset should **not** be too short.
 2. Salts should **not** be too short.
 3. Seeds should **not** be too short. Recommended to use **long** hex strings such as ObjectIds or UUIDs.
-4. Encode **longer** hex strings such as ObjectIds or UUIDs.
+4. Encode **longer** input hex strings such as ObjectIds or UUIDs.
 5. Always **validate** the output after decoding.
 6. The minOutputLength should **not** be too small.
 7. Leave the shuffleOutput as **true**, which is the default value.
@@ -273,9 +307,10 @@ let objectId = seededHashids.getObjectId();
 ## Pitfalls
 1. Encoding of an array of numbers is **not** supported.
 2. Encoding of negative numbers are **not** supported.
-3. Required to pass in the **correct type** of parameters in order to prevent invalid hashids by accident.
-4. It is still **possible** for a different seed to decode a hashid, but it is really rare if the **recommendations** are followed. 
-4. Do **not** use this library as a security tool and do **not** encode sensitive data. This is **not** an encryption library.
+3. Required to pass in the **correct type** of parameters in order to prevent invalid hashids by accident, such as encoding "[object Object]".
+4. It could still be **possible** for a different seed to decode a hashid, but it is really rare if the **recommendations** are followed.
+5. Upgrade to a major version **after testing** as the output hashids may have changed.
+6. Do **not** use this library as a security tool and do **not** encode sensitive data. This is **not** an encryption library.
 
 ## License
 

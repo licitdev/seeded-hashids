@@ -6,7 +6,9 @@ const Defaults = {
   charset: 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789', // Removed 1, 0, iI, oO which could look confusing
   minOutputLength: 8,
   shuffleOutput: true,
-  objectId: null // Use require('mongoose').Types.ObjectId or require('mongodb').ObjectId or similar
+  objectId: null, // Use require('mongoose').Types.ObjectId or require('mongodb').ObjectId or similar
+  shuffleFunction: _shuffleSeededString,
+  unshuffleFunction: _unshuffleSeededString
 };
 
 let _initialized = false;
@@ -15,6 +17,8 @@ let _charset = Defaults.charset;
 let _minOutputLength = Defaults.minOutputLength;
 let _shuffleOutput = Defaults.shuffleOutput;
 let _objectId = Defaults.objectId;
+let _shuffleFunction = Defaults.shuffleFunction;
+let _unshuffleFunction = Defaults.unshuffleFunction;
 
 function _generateRandomObjectId() { // Used for testing the ObjectId variable
   let text = "";
@@ -41,6 +45,7 @@ function _getShuffledCharset(seed) {
   return _shuffleSeededString(_charset, seed);
 }
 
+// Shuffle is not guaranteed to be unique
 function _shuffleSeededArray(array, seed) { // Always required to have a seed
   seed = _seedFromString(seed);
   let currentIndex = array.length, randomIndex, temp;
@@ -58,6 +63,7 @@ function _shuffleSeededArray(array, seed) { // Always required to have a seed
   return array;
 }
 
+// Unshuffle is not guaranteed to be unique
 function _unshuffleSeededArray(array, seed) { // Always required to have a seed
   seed = _seedFromString(seed);
   let currentIndex = 0, maxIndex = array.length, randomIndex, temp;
@@ -236,6 +242,14 @@ module.exports = {
   getObjectId: function() {
     return _objectId;
   },
+  
+  getShuffleFunction: function() {
+    return _shuffleFunction;
+  },
+  
+  getUnshuffleFunction: function() {
+    return _unshuffleFunction;
+  },
 
   encode: function(scope, number, seed) {
     _requireInitialized();
@@ -321,7 +335,7 @@ module.exports = {
 
     if (options.objectId !== undefined) {
       if (typeof options.objectId !== 'function') {
-        throw new Error('Invalid objectId, should pass in Mongoose or MongoDB ObjectId letiable.');
+        throw new Error('Invalid objectId, should pass in Mongoose or MongoDB ObjectId variable.');
       }
 
       try {
@@ -334,6 +348,32 @@ module.exports = {
       }
 
       _objectId = options.objectId;
+    }
+    
+    if (options.shuffleFunction !== undefined) {
+      if (typeof options.shuffleFunction !== 'function') {
+        throw new Error('Invalid shuffleFunction, should pass in a shuffle function that accepts (inputString, seedString) and returns an outputString.');
+      }
+      
+      // Can't really test out as different shuffle functions could accept different input lengths.
+      if (typeof options.shuffleFunction('a', 'a') !== 'string') {
+        throw new Error('Invalid shuffleFunction, outputString should be of string type.');
+      }
+
+      _shuffleFunction = options.shuffleFunction;
+    }
+    
+    if (options.unshuffleFunction !== undefined) {
+      if (typeof options.unshuffleFunction !== 'function') {
+        throw new Error('Invalid unshuffleFunction, should pass in an unshuffle function that accepts (inputString, seedString) and returns an outputString.');
+      }
+      
+      // Can't really test out as different shuffle functions could accept different input lengths.
+      if (typeof options.unshuffleFunction('a', 'a') !== 'string') {
+        throw new Error('Invalid unshuffleFunction, outputString should be of string type.');
+      }
+
+      _unshuffleFunction = options.unshuffleFunction;
     }
 
     if (!options.scopes || !(options.scopes instanceof Array) || options.scopes.length == 0) {
