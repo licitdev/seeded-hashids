@@ -33,8 +33,8 @@ If Application A decodes 'asdiop', it decodes to an empty string.
 
 Install Seeded-Hashids via:
 
-- [npm](https://npmjs.com): `npm install --save seeded-hashids`
-- [yarn](http://yarnpkg.com): `yarn add seeded-hashids`
+- [npm](https://www.npmjs.com/package/seeded-hashids): `npm install --save seeded-hashids`
+- [yarn](https://yarnpkg.com/package/seeded-hashids): `yarn add seeded-hashids`
 
 Sample code:
 
