@@ -62,11 +62,17 @@ decoded = seededHashids.decodeHex('user', encoded, 'unique-seed');
 console.log(encoded); // 'S4RTRZ2L'
 console.log(decoded); // 'abcd1234'
 
-// If a wrong seed is used to decode, will decode to a different output
+// If a wrong seed is used for decodeHex, will decode to a different output
 decoded = seededHashids.decodeHex('user', encoded, 'wrong-seed');
 console.log(decoded); // '' (Empty string)
 
 // Decoding ObjectIds, same as hex but needs to be 24 characters hex string
+encoded = seededHashids.encodeHex('user', 'abcd1234abcd1234abcd1234');
+decoded = seededHashids.decodeObjectId('user', encoded);
+console.log(encoded); // '4Wg453PYPrdhAEdyeMYWpm'
+console.log(decoded); // ObjectId('abcd1234abcd1234abcd1234')
+
+// Decoding ObjectIds with seed, same as hex but needs to be 24 characters hex string
 encoded = seededHashids.encodeHex('user', 'abcd1234abcd1234abcd1234', 'unique-seed');
 decoded = seededHashids.decodeObjectId('user', encoded, 'unique-seed');
 console.log(encoded); // 'QX3Bu2pNSTnPEZFg6sW5EY'
@@ -77,6 +83,28 @@ encoded = seededHashids.encode('user', 12345678);
 decoded = seededHashids.decode('user', encoded);
 console.log(encoded); // 'nY9AyaDn'
 console.log(decoded); // 12345678
+
+// Encoding positive integers with seed
+encoded = seededHashids.encode('user', 12345678, 'unique-seed');
+decoded = seededHashids.decode('user', encoded, 'unique-seed');
+console.log(encoded); // 'aNq4PsAx'
+console.log(decoded); // 12345678
+
+// If a wrong seed is used for decode, will decode to a different output
+decoded = seededHashids.decode('user', encoded, 'wrong-seed');
+console.log(decoded); // NaN (Different output)
+
+// Encoding array of positive integers
+encoded = seededHashids.encode('user', [1,2,3,4,5,6,7,8]);
+decoded = seededHashids.decode('user', encoded);
+console.log(encoded); // '6ZsyFeUKc5fahqS5'
+console.log(decoded); // [1,2,3,4,5,6,7,8]
+
+// Encoding array of positive integers with seed
+encoded = seededHashids.encode('user', [1,2,3,4,5,6,7,8], 'unique-seed');
+decoded = seededHashids.decode('user', encoded, 'unique-seed');
+console.log(encoded); // '9bzhGs3kHZVJs7wm'
+console.log(decoded); // [1,2,3,4,5,6,7,8]
 ```
 
 ## API
@@ -182,7 +210,7 @@ let unshuffleFunction = function(inputString, seedString){
 ```
 
 ---
-### **encode (scope, number, [seed])** : seededHashid `String`
+### **encode (scope, data, [seed])** : seededHashid `String`
 
 > To encode positive numbers.
 
@@ -194,9 +222,9 @@ let userId = seededHashids.encode('user', 12345678);
 
 - This scope should be the same scope string that was used during initialization.
 
-#### number `String`
+#### data `Number` or `Array of Numbers`
 
-- This number to be encoded.
+- The positive number or the array of positive numbers to be encoded.
 
 #### seed `String` *(optional)*
 
@@ -224,9 +252,9 @@ let userId = seededHashids.encodeHex('user', 'abcd1234', 'unique-seed');
 - This seed is used to encode a seeded-hashid that is unique to the seed.
 
 ---
-### **decode (scope, seededHashid, [seed])** : decodedNumber `Number`
+### **decode (scope, seededHashid, [seed])** : decodedData `Number` or `Array of Numbers`
 
-> To decode seeded-hashid into a positive number. Returns NaN if unable to decode.
+> To decode seeded-hashid into a positive number or an array of positive numbers. Returns NaN if unable to decode.
 
 ```javascript
 let userId = seededHashids.decode('user', 'nY9AyaDn', 'unique-seed');
@@ -380,7 +408,7 @@ let unshuffleFunction = seededHashids.getUnshuffleFunction();
 
 ## Pitfalls
 
-1. Encoding of an array of numbers is **not** supported.
+1. Encoding of an array of numbers is supported but the numbers within are **not** individually shuffled.
 2. Encoding of negative numbers are **not** supported.
 3. Required to pass in the **correct type** of parameters in order to prevent the encoding of invalid seeded-hashids by accident, such as encoding `"[object Object]"`.
 4. It could still be **possible** for a different seed to decode a seeded-hashid, but it is really rare if the **recommendations** are followed.

@@ -382,6 +382,15 @@ describe('when initialized', () => {
       assert.throws(() => {
         seededHashids.encode('user', -1);
       });
+      assert.throws(() => {
+        seededHashids.encode('user', []);
+      });
+      assert.throws(() => {
+        seededHashids.encode('user', [123, 'abc']);
+      });
+      assert.throws(() => {
+        seededHashids.encode('user');
+      });
     });
 
     it('should throw an error if invalid seed', () => {
@@ -604,14 +613,14 @@ describe('when encoding and decoding with shuffle', () => {
     seededHashids.initialize(defaults);
   });
 
-  it('should run .encode and .decode correctly without seed', () => {
+  it('should run .encode and .decode for number correctly without seed', () => {
     let number = 12345678;
     let encoded = seededHashids.encode('user', number);
     let decoded = seededHashids.decode('user', encoded);
     assert.deepEqual(number, decoded);
   });
 
-  it('should run .encode and .decode correctly with seed', () => {
+  it('should run .encode and .decode for number correctly with seed', () => {
     let number = 12345678;
     let seed = 'someseed';
     let encoded = seededHashids.encode('user', number, seed);
@@ -619,13 +628,37 @@ describe('when encoding and decoding with shuffle', () => {
     assert.deepEqual(number, decoded);
   });
 
-  it('should run .encode and .decode correctly with a wrong seed', () => {
+  it('should run .encode and .decode for number correctly with a wrong seed', () => {
     let number = 12345678;
     let seed = 'someseed';
     let wrongSeed = 'wrongseed';
     let encoded = seededHashids.encode('user', number, seed);
     let decoded = seededHashids.decode('user', encoded, wrongSeed);
     assert.notDeepEqual(number, decoded);
+  });
+  
+  it('should run .encode and .decode for array of numbers correctly without seed', () => {
+    let numbers = [1,2,3,4,5,6,7,8];
+    let encoded = seededHashids.encode('user', numbers);
+    let decoded = seededHashids.decode('user', encoded);
+    assert.deepEqual(numbers, decoded);
+  });
+
+  it('should run .encode and .decode for array of numbers correctly with seed', () => {
+    let numbers = [1,2,3,4,5,6,7,8];
+    let seed = 'someseed';
+    let encoded = seededHashids.encode('user', numbers, seed);
+    let decoded = seededHashids.decode('user', encoded, seed);
+    assert.deepEqual(numbers, decoded);
+  });
+
+  it('should run .encode and .decode for array of numbers correctly with a wrong seed', () => {
+    let numbers = [1,2,3,4,5,6,7,8];
+    let seed = 'someseed';
+    let wrongSeed = 'wrongseed';
+    let encoded = seededHashids.encode('user', numbers, seed);
+    let decoded = seededHashids.decode('user', encoded, wrongSeed);
+    assert.notDeepEqual(numbers, decoded);
   });
 
   it('should run .encodeHex and .decodeHex correctly without seed', () => {
@@ -730,14 +763,14 @@ describe('when encoding and decoding without shuffle', () => {
     defaults.shuffleOutput = true;
   });
 
-  it('should run .encode and .decode correctly without seed', () => {
+  it('should run .encode and .decode for number correctly without seed', () => {
     let number = 12345678;
     let encoded = seededHashids.encode('user', number);
     let decoded = seededHashids.decode('user', encoded);
     assert.deepEqual(number, decoded);
   });
 
-  it('should run .encode and .decode correctly with seed', () => {
+  it('should run .encode and .decode for number correctly with seed', () => {
     let number = 12345678;
     let seed = 'someseed';
     let encoded = seededHashids.encode('user', number, seed);
@@ -745,13 +778,37 @@ describe('when encoding and decoding without shuffle', () => {
     assert.deepEqual(number, decoded);
   });
 
-  it('should run .encode and .decode correctly with a wrong seed', () => {
+  it('should run .encode and .decode for number correctly with a wrong seed', () => {
     let number = 12345678;
     let seed = 'someseed';
     let wrongSeed = 'wrongseed';
     let encoded = seededHashids.encode('user', number, seed);
     let decoded = seededHashids.decode('user', encoded, wrongSeed);
     assert.notDeepEqual(number, decoded);
+  });
+  
+  it('should run .encode and .decode for array of numbers correctly without seed', () => {
+    let numbers = [1,2,3,4,5,6,7,8];
+    let encoded = seededHashids.encode('user', numbers);
+    let decoded = seededHashids.decode('user', encoded);
+    assert.deepEqual(numbers, decoded);
+  });
+
+  it('should run .encode and .decode for array of numbers correctly with seed', () => {
+    let numbers = [1,2,3,4,5,6,7,8];
+    let seed = 'someseed';
+    let encoded = seededHashids.encode('user', numbers, seed);
+    let decoded = seededHashids.decode('user', encoded, seed);
+    assert.deepEqual(numbers, decoded);
+  });
+
+  it('should run .encode and .decode for array of numbers correctly with a wrong seed', () => {
+    let numbers = [1,2,3,4,5,6,7,8];
+    let seed = 'someseed';
+    let wrongSeed = 'wrongseed';
+    let encoded = seededHashids.encode('user', numbers, seed);
+    let decoded = seededHashids.decode('user', encoded, wrongSeed);
+    assert.notDeepEqual(numbers, decoded);
   });
 
   it('should run .encodeHex and .decodeHex correctly without seed', () => {

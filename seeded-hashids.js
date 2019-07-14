@@ -114,26 +114,54 @@ function _encode(useHex, scope, data, seed) {
   if (!selectedHasher) {
     throw new Error('Missing scope.');
   }
+  
+  let isArray = false;
 
   if (useHex) {
     if (!data || typeof data !== 'string' || !HexPattern.test(data)) {
       throw new Error('Missing data, must be a hex string.');
     }
   } else {
-    if (data === undefined || typeof data !== 'number' || parseInt(data) < 0) {
-      throw new Error('Missing data, must be a positive number.');
+    if (data === undefined) {
+      throw new Error('Missing data, must be a positive number or an array of positive numbers.');
+    }
+    else if(typeof data === 'number'){
+      let temp = parseInt(data);
+      if(isNaN(temp) || temp < 0){
+        throw new Error('Invalid data, must be a positive number greater of equals 0.');
+      }
+    }
+    else if(typeof data === 'object' && data.constructor === Array){
+      for(let i = 0; i < data.length; i++){
+        let temp = parseInt(data[i]);
+        if(isNaN(temp) || temp < 0){
+          throw new Error('Invalid data, must be a positive number greater of equals 0.');
+        }
+      }
+      isArray = true;
+    }
+    else{
+      throw new Error('Invalid data, must be a positive number or an array of positive numbers.');
     }
   }
 
   if (seed !== undefined && typeof seed !== 'string') {
     throw new Error('Invalid seed, must be a string.');
   }
+  
+  if(isArray){
+    if (seed !== undefined && data) {
+      data = data.map((x) => x); // Prevent changes to array that was passed in
+      data = _shuffleSeededArray(data, scope + seed);
+    }
+  }
+  else{
+    data = data.toString(); // Convert to string so it could be shuffled
 
-  data = data.toString(); // Convert to string so it could be shuffled
-
-  // Must have seed and data cannot be empty string
-  if (seed !== undefined && data) {
-    data = _shuffleSeededString(data, scope + seed);
+    // Must have seed and data cannot be empty string
+    if (seed !== undefined && data) {
+      data = _shuffleSeededString(data, scope + seed);
+    }
   }
 
   let hashid;
@@ -177,6 +205,7 @@ function _decode(useHex, scope, hashid, seed) {
   }
 
   let data;
+  let isArray = false;
 
   if (useHex) {
     // Hex based hashid
@@ -187,20 +216,31 @@ function _decode(useHex, scope, hashid, seed) {
   } else {
     // Count based hashid
     data = selectedHasher.decode(hashid);
-    if (data instanceof Array && data.length > 0) {
+    if(data.length === 1){
       data = data[0] + '';
-    } else {
+    }
+    else if(data.length > 1){
+      isArray = true;
+    }
+    else{
       data = '';
     }
   }
 
-  // Must have seed and decoded hashid cannot be empty string
-  if (seed !== undefined && data) {
-    data = _unshuffleSeededString(data, scope + seed);
+  if(isArray){
+    if (seed !== undefined && data) {
+      data = _unshuffleSeededArray(data, scope + seed);
+    }
   }
-
-  if (!useHex) {
-    data = parseInt(data);
+  else{
+    // Must have seed and decoded hashid cannot be empty string
+    if (seed !== undefined && data) {
+      data = _unshuffleSeededString(data, scope + seed);
+    }
+    
+    if (!useHex) {
+      data = parseInt(data);
+    }
   }
 
   return data;
