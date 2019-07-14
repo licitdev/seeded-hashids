@@ -132,10 +132,13 @@ function _encode(useHex, scope, data, seed) {
       }
     }
     else if(typeof data === 'object' && data.constructor === Array){
+      if(data.length === 0){
+        throw new Error('Invalid data, must be an array of positive number greater or equals 0.');
+      }
       for(let i = 0; i < data.length; i++){
         let temp = parseInt(data[i]);
         if(isNaN(temp) || temp < 0){
-          throw new Error('Invalid data, must be a positive number greater of equals 0.');
+          throw new Error('Invalid data, numbers within array must be greater or equals 0.');
         }
       }
       isArray = true;
